@@ -34,10 +34,25 @@ public class Cat {
             tasks[taskNum].unmarkDone();
             this.getInput(this.scanner.nextLine());
         } else {
-            tasks[curr] = new Task(input);
+            Task task = null;
+            if (input.matches("^deadline .+$")) {
+                String[] parts = input.split(" /by ");
+                String[] parts2 = parts[0].split("deadline ");
+                task = new Deadline(parts2[1], parts[1]);
+            } else if (input.matches ("^todo .+$")) {
+                String[] parts = input.split("todo ");
+                task = new Todo(parts[1]);
+            } else if (input.matches("^event .+$")) {
+                String[] parts = input.split("event ");
+                String[] parts2 = parts[1].split(" /from ");
+                String[] parts3 = parts2[1].split(" /to ");
+                task = new Event(parts2[0], parts3[0], parts3[1]);
+            }
+            tasks[curr] = task;
             curr++;
             System.out.println("____________________________________________________________\n");
-            System.out.println("added: " + input);
+            System.out.println("Got it. I've added this task: \n" + tasks[curr - 1]);
+            System.out.println("Now you have " + curr + " tasks in the list.");
             System.out.println("____________________________________________________________\n");
             this.getInput(this.scanner.nextLine());
         }
@@ -58,9 +73,10 @@ public class Cat {
     }
 
     public void printList(Task[] tasks, int curr) {
-        System.out.println("____________________________________________________________\n");
+        System.out.println("____________________________________________________________\n" +
+                "Here are the tasks in your list: ");
         for (int i = 0; i < curr; i++) {
-            System.out.println(i + 1 + ". [" + tasks[i].getStatusIcon() + "] " + tasks[i]);
+            System.out.println(i + 1 + ". " + tasks[i]);
         }
         System.out.println("____________________________________________________________\n");
     }

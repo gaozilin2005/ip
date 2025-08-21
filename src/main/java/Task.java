@@ -12,23 +12,21 @@ public class Task {
     }
 
     public void markDone() {
-        System.out.println("____________________________________________________________\n" +
-                "Nice! I've marked this task as done: \n" +
-                "[X] " + this +
-                "\n____________________________________________________________\n");
         this.isDone = true;
+        System.out.println("____________________________________________________________\n" +
+                "Nice! I've marked this task as done: \n" + this +
+                "\n____________________________________________________________\n");
     }
 
     public void unmarkDone() {
-        System.out.println("____________________________________________________________\n" +
-                "OK, I've marked this task as not done yet: \n" +
-                "[ ] " + this +
-                "\n____________________________________________________________\n");
         this.isDone = false;
+        System.out.println("____________________________________________________________\n" +
+                "OK, I've marked this task as not done yet: \n" + this +
+                "\n____________________________________________________________\n");
     }
 
     @Override
     public String toString() {
-        return this.description;
+        return "[" + this.getStatusIcon() + "] " + this.description;
     }
 }
