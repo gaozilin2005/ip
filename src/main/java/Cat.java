@@ -50,24 +50,24 @@ public class Cat {
             }
             tasks[curr] = task;
             curr++;
-            System.out.println("____________________________________________________________\n");
+            System.out.println("____________________________________________________________");
             System.out.println("Got it. I've added this task: \n" + tasks[curr - 1]);
             System.out.println("Now you have " + curr + " tasks in the list.");
-            System.out.println("____________________________________________________________\n");
+            System.out.println("____________________________________________________________");
             this.getInput(this.scanner.nextLine());
         }
 
     }
 
     public void printGreeting() {
-        System.out.println("____________________________________________________________\n");
-        System.out.println(" Hello :) I'm Cat\n");
+        System.out.println("____________________________________________________________");
+        System.out.println(" Hello :) I'm Cat");
         System.out.print(" What can I do for you?\n");
-        System.out.println("____________________________________________________________\n");
+        System.out.println("____________________________________________________________");
     }
 
     public void printGoodbye() {
-        System.out.println("Bye. Hope to see you again soon!\n");
+        System.out.println("Bye. Hope to see you again soon!");
         System.out.println("____________________________________________________________");
         scanner.close();
     }
@@ -78,6 +78,6 @@ public class Cat {
         for (int i = 0; i < curr; i++) {
             System.out.println(i + 1 + ". " + tasks[i]);
         }
-        System.out.println("____________________________________________________________\n");
+        System.out.println("____________________________________________________________");
     }
 }
