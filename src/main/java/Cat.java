@@ -8,7 +8,7 @@ public class Cat {
     public static void main(String[] args) {
         Cat cat = new Cat();
         cat.printGreeting();
-        cat.getInput(cat.scanner.nextLine());
+        cat.run();
     }
 
     public Cat() {
@@ -17,44 +17,69 @@ public class Cat {
         curr = 0;
     }
 
-    public void getInput(String input) {
-        if (input.equals("bye")) {
-            this.printGoodbye();
-        } else if (input.equals("list")) {
-            this.printList(tasks, curr);
-            this.getInput(this.scanner.nextLine());
-        } else if (input.matches("^mark .+$")) {
-            String[] parts = input.split(" ");
-            int taskNum = Integer.parseInt(parts[1]) - 1;
-            tasks[taskNum].markDone();
-            this.getInput(this.scanner.nextLine());
-        } else if (input.matches("^unmark .+$")) {
-            String[] parts = input.split(" ");
-            int taskNum = Integer.parseInt(parts[1]) - 1;
-            tasks[taskNum].unmarkDone();
-            this.getInput(this.scanner.nextLine());
-        } else {
-            Task task = null;
-            if (input.matches("^deadline .+$")) {
-                String[] parts = input.split(" /by ");
-                String[] parts2 = parts[0].split("deadline ");
-                task = new Deadline(parts2[1], parts[1]);
-            } else if (input.matches ("^todo .+$")) {
-                String[] parts = input.split("todo ");
-                task = new Todo(parts[1]);
-            } else if (input.matches("^event .+$")) {
-                String[] parts = input.split("event ");
-                String[] parts2 = parts[1].split(" /from ");
-                String[] parts3 = parts2[1].split(" /to ");
-                task = new Event(parts2[0], parts3[0], parts3[1]);
+    public void run() {
+        String input;
+        while (!(input = scanner.nextLine()).equals("bye")) {
+            handleInput(input);
+        }
+        printGoodbye();
+    }
+
+    public void handleInput(String input) {
+        try {
+            if (input.equals("bye")) {
+                this.printGoodbye();
+            } else if (input.equals("list")) {
+                this.printList(tasks, curr);
+            } else if (input.matches("^mark .+$")) {
+                String[] parts = input.split(" ");
+                int taskNum = Integer.parseInt(parts[1]) - 1;
+                tasks[taskNum].markDone();
+            } else if (input.matches("^unmark .+$")) {
+                String[] parts = input.split(" ");
+                int taskNum = Integer.parseInt(parts[1]) - 1;
+                tasks[taskNum].unmarkDone();
+            } else {
+                Task task = null;
+                if (input.startsWith("deadline")) {
+                    if (input.matches("deadline|deadline ")) {
+                        throw new EmptyException("OOPS!!! The description of a deadline cannot be empty.");
+                    }
+                    String[] parts = input.split(" /by ");
+                    String[] parts2 = parts[0].split("deadline ");
+                    task = new Deadline(parts2[1], parts[1]);
+                } else if (input.startsWith("todo")) {
+                    if (input.matches("todo|todo ")) {
+                        throw new EmptyException("OOPS!!! The description of a todo cannot be empty.");
+                    }
+                    String[] parts = input.split("todo ");
+                    task = new Todo(parts[1]);
+                } else if (input.startsWith("event")) {
+                    if (input.matches("todo|todo ")) {
+                        throw new EmptyException("OOPS!!! The description of a event cannot be empty.");
+                    }
+                    String[] parts = input.split("event ");
+                    String[] parts2 = parts[1].split(" /from ");
+                    String[] parts3 = parts2[1].split(" /to ");
+                    task = new Event(parts2[0], parts3[0], parts3[1]);
+                } else {
+                    throw new InvalidException("OOPS!!! I'm sorry, but I don't know what that means :-(");
+                }
+                tasks[curr] = task;
+                curr++;
+                System.out.println("____________________________________________________________");
+                System.out.println("Got it. I've added this task: \n" + tasks[curr - 1]);
+                System.out.println("Now you have " + curr + " tasks in the list.");
+                System.out.println("____________________________________________________________");
             }
-            tasks[curr] = task;
-            curr++;
+        } catch (EmptyException e) {
             System.out.println("____________________________________________________________");
-            System.out.println("Got it. I've added this task: \n" + tasks[curr - 1]);
-            System.out.println("Now you have " + curr + " tasks in the list.");
+            System.out.println(e.getMessage());
             System.out.println("____________________________________________________________");
-            this.getInput(this.scanner.nextLine());
+        } catch (InvalidException e) {
+            System.out.println("____________________________________________________________");
+            System.out.println(e.getMessage());
+            System.out.println("____________________________________________________________");
         }
 
     }
