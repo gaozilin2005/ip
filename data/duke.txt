@@ -1,4 +1,18 @@
-T |   | read book
-D | X | borrow book | monday
-D |   | book club | monday 6pm to 8pm
 T |   | hello
+D |   | borrow book | 2005-03-24
+D |   | borrow book | 2024-03-24
+D |   | borrow book | 2025-01-01
+D |   | book | 2025-03-24
+D |   | food | 2024-03-24
+D |   | apple | 2025-03-24
+T |   | read book
+T |   | new task
+T |   | borrow book
+D |   | read book | 2024-03-24
+T |   | wash clothes
+T |   | one
+D |   | one | 2024-03-24
+D |   | one | 2024-03-24
+D |   | borrow book | 2005-03-24
+D |   | something | 2025-03-24
+T |   | somethinggg

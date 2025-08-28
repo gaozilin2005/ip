@@ -1,4 +1,5 @@
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Storage {
@@ -36,9 +37,9 @@ public class Storage {
         return tasks;
     }
 
-    public void save(ArrayList<Task> tasks) throws IOException {
+    public void save(TaskList tasks) throws IOException {
         BufferedWriter bw = new BufferedWriter(new FileWriter(filePath));
-        for (Task task : tasks) {
+        for (Task task : tasks.getTasks()) {
             bw.write(task.toSaveFormat());
             bw.newLine();
         }
@@ -58,7 +59,7 @@ public class Storage {
                 return new Todo(description, isDone);
             case "D":
                 String by = parts[3];
-                return new Deadline(description, by, isDone);
+                return new Deadline(description, LocalDate.parse(by), isDone);
             case "E":
                 String from = parts[3];
                 String to = parts[4];

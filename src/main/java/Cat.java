@@ -1,129 +1,69 @@
 import java.io.IOException;
-import java.util.Scanner;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Cat {
-    private Scanner scanner;
-    private ArrayList<Task> tasks;
+    private TaskList tasks;
     private Storage storage;
-
-    public static void main(String[] args) throws IOException {
-        Cat cat = new Cat();
-        cat.storage = new Storage();
-        cat.tasks = cat.storage.load();
-        cat.printGreeting();
-        cat.run();
-    }
+    private Ui ui;
 
     public Cat() {
-        scanner = new Scanner(System.in);
-        tasks = new ArrayList<>();
+        ui = new Ui();
+        storage = new Storage();
+        try {
+            tasks = new TaskList(storage.load());
+        } catch (IOException e) {
+            ui.showLoadingError();
+            tasks = new TaskList(new ArrayList<>());
+        }
     }
 
     public void run() {
+        ui.printGreeting();
+        Scanner scanner = new Scanner(System.in);
         String input;
+
         while (!(input = scanner.nextLine()).equals("bye")) {
-            handleInput(input);
-        }
-        printGoodbye();
-    }
-
-    public void handleInput(String input) {
-        try {
-            if (input.equals("bye")) {
-                this.printGoodbye();
-            } else if (input.equals("list")) {
-                this.printList(tasks);
-            } else if (input.matches("^mark .+$")) {
-                String[] parts = input.split(" ");
-                int taskNum = Integer.parseInt(parts[1]) - 1;
-                tasks.get(taskNum).markDone();
-            } else if (input.matches("^unmark .+$")) {
-                String[] parts = input.split(" ");
-                int taskNum = Integer.parseInt(parts[1]) - 1;
-                tasks.get(taskNum).unmarkDone();
-            } else if (input.startsWith("delete")) {
-                String[] parts = input.split("delete ");
-                int taskNum = Integer.parseInt(parts[1]) - 1;
-                this.printLine();
-                System.out.println("Noted. I've removed this task: \n" +
-                        tasks.get(taskNum) + "\n Now you have " + (tasks.size() - 1) +
-                        " tasks in the list.");
-                this.printLine();
-                tasks.remove(taskNum);
-            } else {
-                Task task = null;
-                if (input.startsWith("deadline")) {
-                    if (input.matches("deadline|deadline ")) {
-                        throw new EmptyException(
-                                "OOPS!!! The description of a deadline cannot be empty.");
-                    }
-                    String[] parts = input.split(" /by ");
-                    String[] parts2 = parts[0].split("deadline ");
-                    task = new Deadline(parts2[1], parts[1], false);
-                } else if (input.startsWith("todo")) {
-                    if (input.matches("todo|todo ")) {
-                        throw new EmptyException(
-                                "OOPS!!! The description of a todo cannot be empty.");
-                    }
-                    String[] parts = input.split("todo ");
-                    task = new Todo(parts[1], false);
-                } else if (input.startsWith("event")) {
-                    if (input.matches("todo|todo ")) {
-                        throw new EmptyException(
-                                "OOPS!!! The description of a event cannot be empty.");
-                    }
-                    String[] parts = input.split("event ");
-                    String[] parts2 = parts[1].split(" /from ");
-                    String[] parts3 = parts2[1].split(" /to ");
-                    task = new Event(parts2[0], parts3[0], parts3[1], false);
+            try {
+                if (input.equals("list")) {
+                    tasks.printList();
+                } else if (input.matches("^mark .+$")) {
+                    String[] parts = input.split(" ");
+                    int taskNum = Integer.parseInt(parts[1]) - 1;
+                    tasks.markDone(taskNum);
+                } else if (input.matches("^unmark .+$")) {
+                    String[] parts = input.split(" ");
+                    int taskNum = Integer.parseInt(parts[1]) - 1;
+                    tasks.unmarkDone(taskNum);
+                } else if (input.startsWith("delete")) {
+                    String[] parts = input.split("delete ");
+                    int taskNum = Integer.parseInt(parts[1]) - 1;
+                    tasks.delete(taskNum);
+                } else if (input.startsWith("due")) {
+                    String[] parts = input.split("due ");
+                    LocalDate date = LocalDate.parse(parts[1]);
+                    tasks.printDueOnDate(date);
                 } else {
-                    throw new InvalidException(
-                            "OOPS!!! I'm sorry, but I don't know what that means :-(");
+                    try {
+                        Task task = Parser.parseTask(input);
+                        tasks.add(task);
+                    } catch (EmptyException | InvalidException e) {
+                        this.ui.printLine();
+                        System.out.println(e.getMessage());
+                        this.ui.printLine();
+                    }
                 }
-                tasks.add(task);
-                this.printLine();
-                System.out.println("Got it. I've added this task: \n" + task);
-                System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-                this.printLine();
+                storage.save(tasks);
+            }  catch (IOException e) {
+                System.out.println("OOPS!!! Could not save tasks to file: " + e.getMessage());
             }
-            storage.save(tasks);
-        } catch (EmptyException e) {
-            this.printLine();
-            System.out.println(e.getMessage());
-            this.printLine();
-        } catch (InvalidException e) {
-            this.printLine();
-            System.out.println(e.getMessage());
-            this.printLine();
-        } catch (IOException e) {
-            System.out.println("OOPS!!! Could not save tasks to file: " + e.getMessage());
         }
+        ui.printGoodbye();
     }
 
-    public void printGreeting() {
-        this.printLine();
-        System.out.println(" Hello :) I'm Cat");
-        System.out.print(" What can I do for you?\n");
-        this.printLine();
+    public static void main(String[] args) throws IOException {
+        new Cat().run();
     }
 
-    public void printGoodbye() {
-        System.out.println("Bye. Hope to see you again soon!");
-        this.printLine();
-        scanner.close();
-    }
-
-    public void printList(ArrayList<Task> tasks) {
-        this.printLine();
-        System.out.println("Here are the tasks in your list: ");
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.println(i + 1 + ". " + tasks.get(i));
-        }
-        this.printLine();
-    }
-
-    public void printLine() {
-        System.out.println("____________________________________________________________");
-    }
 }
