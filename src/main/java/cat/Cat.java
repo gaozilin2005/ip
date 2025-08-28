@@ -1,3 +1,11 @@
+package cat;
+
+import cat.exception.EmptyException;
+import cat.exception.InvalidException;
+import cat.task.Task;
+import cat.task.TaskList;
+import cat.ui.Ui;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
