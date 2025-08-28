@@ -1,12 +1,16 @@
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Cat {
     private Scanner scanner;
     private ArrayList<Task> tasks;
+    private Storage storage;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Cat cat = new Cat();
+        cat.storage = new Storage();
+        cat.tasks = cat.storage.load();
         cat.printGreeting();
         cat.run();
     }
@@ -56,14 +60,14 @@ public class Cat {
                     }
                     String[] parts = input.split(" /by ");
                     String[] parts2 = parts[0].split("deadline ");
-                    task = new Deadline(parts2[1], parts[1]);
+                    task = new Deadline(parts2[1], parts[1], false);
                 } else if (input.startsWith("todo")) {
                     if (input.matches("todo|todo ")) {
                         throw new EmptyException(
                                 "OOPS!!! The description of a todo cannot be empty.");
                     }
                     String[] parts = input.split("todo ");
-                    task = new Todo(parts[1]);
+                    task = new Todo(parts[1], false);
                 } else if (input.startsWith("event")) {
                     if (input.matches("todo|todo ")) {
                         throw new EmptyException(
@@ -72,7 +76,7 @@ public class Cat {
                     String[] parts = input.split("event ");
                     String[] parts2 = parts[1].split(" /from ");
                     String[] parts3 = parts2[1].split(" /to ");
-                    task = new Event(parts2[0], parts3[0], parts3[1]);
+                    task = new Event(parts2[0], parts3[0], parts3[1], false);
                 } else {
                     throw new InvalidException(
                             "OOPS!!! I'm sorry, but I don't know what that means :-(");
@@ -83,6 +87,7 @@ public class Cat {
                 System.out.println("Now you have " + tasks.size() + " tasks in the list.");
                 this.printLine();
             }
+            storage.save(tasks);
         } catch (EmptyException e) {
             this.printLine();
             System.out.println(e.getMessage());
@@ -91,6 +96,8 @@ public class Cat {
             this.printLine();
             System.out.println(e.getMessage());
             this.printLine();
+        } catch (IOException e) {
+            System.out.println("OOPS!!! Could not save tasks to file: " + e.getMessage());
         }
     }
 
