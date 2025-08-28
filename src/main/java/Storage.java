@@ -25,21 +25,11 @@ public class Storage {
 
         //read each line until end of file
         while ((line = br.readLine()) != null) {
-            String[] parts = line.split(" \\| ");
-            String type = parts[0];
-            boolean isDone = parts[1].equals("X");
-            String description = parts[2];
-
-            switch (type) {
-            case "T":
-                tasks.add(new Todo(description, isDone));
-                break;
-            case "D":
-                tasks.add(new Deadline(description, parts[3], isDone));
-                break;
-            case "E":
-                tasks.add(new Event(description, parts[3], parts[4], isDone));
-                break;
+            try {
+                Task task = parseTask(line);
+                tasks.add(task);
+            } catch (Exception e) {
+                System.out.println("Skipping corrupted line: " + line);
             }
         }
         br.close();
@@ -53,6 +43,29 @@ public class Storage {
             bw.newLine();
         }
         bw.close();
+    }
+
+    //throws unchecked exceptions so no need to declare in method signature
+    public Task parseTask(String line) {
+        String[] parts = line.split(" \\| ");
+        String type = parts[0];
+        boolean isDone = parts[1].equals("X");
+        String description = parts[2];
+        //will automatically throw exception if too few words
+
+        switch (type) {
+            case "T":
+                return new Todo(description, isDone);
+            case "D":
+                String by = parts[3];
+                return new Deadline(description, by, isDone);
+            case "E":
+                String from = parts[3];
+                String to = parts[4];
+                return new Event(description, from, to, isDone);
+            default:
+                throw new IllegalArgumentException("Unknown task type: " + line);
+        }
     }
 
 }

@@ -1,3 +1,4 @@
 T |   | read book
 D | X | borrow book | monday
 D |   | book club | monday 6pm to 8pm
+T |   | hello
