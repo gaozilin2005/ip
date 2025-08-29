@@ -3,13 +3,24 @@ package cat.task;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * Represents a list of tasks.
+ * A <code>TaskList</code> stores and manages multiple {@link Task} objects.
+ */
 public class TaskList {
     private ArrayList<Task> ls;
 
+    /**
+     * Creates a task list with the given tasks.
+     * @param ls list of tasks
+     */
     public TaskList(ArrayList<Task> ls) {
         this.ls = ls;
     }
 
+    /**
+     * Prints all tasks in the list with their index.
+     */
     public void printList() {
         this.printLine();
         System.out.println("Here are the tasks in your list: ");
@@ -19,14 +30,26 @@ public class TaskList {
         this.printLine();
     }
 
+    /**
+     * Marks a task as done.
+     * @param taskNum index of task in list (0-based)
+     */
     public void markDone(int taskNum) {
         this.ls.get(taskNum).markDone();
     }
 
+    /**
+     * Marks a task as not done.
+     * @param taskNum index of task in list (0-based)
+     */
     public void unmarkDone(int taskNum) {
         this.ls.get(taskNum).unmarkDone();
     }
 
+    /**
+     * Deletes a task from the list and prints a message.
+     * @param taskNum index of task in list (0-based)
+     */
     public void delete(int taskNum) {
         this.printLine();
         System.out.println("Noted. I've removed this task: \n" +
@@ -35,6 +58,10 @@ public class TaskList {
         this.printLine();
     }
 
+    /**
+     * Adds a task to the list and prints a message.
+     * @param task the task to add
+     */
     public void add(Task task) {
         ls.add(task);
         this.printLine();
@@ -43,6 +70,10 @@ public class TaskList {
         this.printLine();
     }
 
+    /**
+     * Prints all deadline tasks due on the given date.
+     * @param date date to filter deadlines
+     */
     public void printDueOnDate(LocalDate date) {
         for (Task task : ls) {
             if (task instanceof Deadline && ((Deadline) task).dueOn(date)) {
@@ -52,18 +83,34 @@ public class TaskList {
         this.printLine();
     }
 
+    /**
+     * Returns all tasks in this list.
+     * @return list of tasks
+     */
     public ArrayList<Task> getTasks() {
         return this.ls;
     }
 
+    /**
+     * Returns the description of a task at a given index.
+     * @param num index of the task
+     * @return description of the task
+     */
     public String getDescription(int num) {
         return this.ls.get(num).getDescription();
     }
 
+    /**
+     * Returns the number of tasks in the list.
+     * @return number of tasks
+     */
     public int getSize() {
         return this.ls.size();
     }
 
+    /**
+     * Prints a line separator.
+     */
     public void printLine() {
         System.out.println("____________________________________________________________");
     }

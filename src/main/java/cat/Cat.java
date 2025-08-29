@@ -11,11 +11,20 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Main application class for the Cat task manager.
+ * A <code>Cat</code> object coordinates input parsing,
+ * task list updates, and saving to storage.
+ */
 public class Cat {
     private TaskList tasks;
     private Storage storage;
     private Ui ui;
 
+    /**
+     * Creates a Cat application with storage file <code>./data/duke.txt</code>.
+     * Loads tasks from storage if available, otherwise starts with an empty list.
+     */
     public Cat() {
         ui = new Ui();
         storage = new Storage("./data/duke.txt");
@@ -27,6 +36,12 @@ public class Cat {
         }
     }
 
+    /**
+     * Runs the main application loop.
+     * Reads user input and executes commands until <code>bye</code> is entered.
+     * Supports commands such as <code>list</code>, <code>mark</code>, <code>unmark</code>,
+     * <code>delete</code>, <code>due</code>, and task creation.
+     */
     public void run() {
         ui.printGreeting();
         Scanner scanner = new Scanner(System.in);
@@ -70,6 +85,11 @@ public class Cat {
         ui.printGoodbye();
     }
 
+    /**
+     * Entry point for the application.
+     * @param args command line arguments (not used)
+     * @throws IOException if tasks cannot be loaded or saved
+     */
     public static void main(String[] args) throws IOException {
         new Cat().run();
     }
