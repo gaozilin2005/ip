@@ -9,8 +9,8 @@ import java.util.ArrayList;
 public class Storage {
     private String filePath;
 
-    public Storage() {
-        this.filePath = "./data/duke.txt";
+    public Storage(String filePath) {
+        this.filePath = filePath;
     }
 
     //load file when program first opens
@@ -59,12 +59,12 @@ public class Storage {
         //will automatically throw exception if too few words
 
         switch (type) {
-            case "T":
+            case "TODO":
                 return new Todo(description, isDone);
-            case "D":
+            case "DEADLINE":
                 String by = parts[3];
                 return new Deadline(description, LocalDate.parse(by), isDone);
-            case "E":
+            case "EVENT":
                 String from = parts[3];
                 String to = parts[4];
                 return new Event(description, from, to, isDone);

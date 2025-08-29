@@ -11,6 +11,8 @@ repositories {
 
 dependencies {
     // Add dependencies here if you need any, e.g. JUnit
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.0'
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.0'
 }
 
 application {
@@ -22,4 +24,27 @@ checkstyle {
     toolVersion = '10.12.0'
     // Remove this line if you don't have a custom config
     // configDirectory = file('config/checkstyle')
+}
+
+//shadowJar {
+//    archiveBaseName = "chatterbox"
+//    archiveClassifier = null;
+//}
+
+run {
+    standardInput = System.in;
+}
+
+test {
+    useJUnitPlatform()
+
+    testLogging {
+        events "passed", "skipped", "failed"
+
+        showExceptions true
+        exceptionFormat "full"
+        showCauses true
+        showStackTraces true
+        showStandardStreams = false
+    }
 }

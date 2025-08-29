@@ -30,7 +30,7 @@ public class Parser {
         return task;
     }
 
-    public static Task parseDeadline(String input) throws EmptyException{
+    public static Task parseDeadline(String input) throws EmptyException {
         String[] parts = input.split(" /by ");
         if (parts.length == 1) {
             throw new EmptyException(

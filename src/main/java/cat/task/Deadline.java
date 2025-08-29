@@ -25,4 +25,21 @@ public class Deadline extends Task {
     public boolean dueOn(LocalDate date) {
         return date.equals(by);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        } if (!(o instanceof Deadline)) {
+            return false;
+        } else {
+            Deadline other = (Deadline) o;
+            return this.description.equals(other.getDescription())
+                    && this.getBy().equals(other.getBy());
+        }
+    }
+
+    public LocalDate getBy() {
+        return this.by;
+    }
 }

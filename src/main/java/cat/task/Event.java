@@ -19,4 +19,26 @@ public class Event extends Task {
     public String toSaveFormat() {
         return "D | " + getStatusIcon() + " | " + description + " | " + from + " to " + to;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        } if (!(o instanceof Event)) {
+            return false;
+        } else {
+            Event other = (Event) o;
+            return this.description.equals(other.getDescription())
+                    && this.getFrom().equals(other.getFrom())
+                    && this.getTo().equals(other.getTo());
+        }
+    }
+
+    public String getFrom() {
+        return this.from;
+    }
+
+    public String getTo() {
+        return this.to;
+    }
 }
