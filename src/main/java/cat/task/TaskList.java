@@ -56,6 +56,14 @@ public class TaskList {
         return this.ls;
     }
 
+    public String getDescription(int num) {
+        return this.ls.get(num).getDescription();
+    }
+
+    public int getSize() {
+        return this.ls.size();
+    }
+
     public void printLine() {
         System.out.println("____________________________________________________________");
     }

@@ -18,7 +18,7 @@ public class Cat {
 
     public Cat() {
         ui = new Ui();
-        storage = new Storage();
+        storage = new Storage("./data/duke.txt");
         try {
             tasks = new TaskList(storage.load());
         } catch (IOException e) {
