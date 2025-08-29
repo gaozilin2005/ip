@@ -1,9 +1,21 @@
 package cat.task;
 
+/**
+ * Represents an event task.
+ * An <code>Event</code> has a description, a start time, an end time,
+ * and a done/undone status.
+ */
 public class Event extends Task {
     protected String from;
     protected String to;
 
+    /**
+     * Creates an event task.
+     * @param description task description
+     * @param from start time or date
+     * @param to end time or date
+     * @param isDone whether the task is completed
+     */
     public Event(String description, String from, String to, boolean isDone) {
         super(description, isDone);
         this.from = from;
@@ -34,10 +46,18 @@ public class Event extends Task {
         }
     }
 
+    /**
+     * Returns the start time/date of the event.
+     * @return event start
+     */
     public String getFrom() {
         return this.from;
     }
 
+    /**
+     * Returns the end time/date of the event.
+     * @return event end
+     */
     public String getTo() {
         return this.to;
     }

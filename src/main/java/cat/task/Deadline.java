@@ -3,9 +3,20 @@ package cat.task;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Represents a deadline task.
+ * A <code>Deadline</code> has a description, a due date,
+ * and a done/undone status.
+ */
 public class Deadline extends Task {
     protected LocalDate by;
 
+    /**
+     * Creates a deadline task.
+     * @param description task description
+     * @param by due date
+     * @param isDone whether the task is completed
+     */
     public Deadline(String description, LocalDate by, boolean isDone) {
         super(description, isDone);
         this.by = by;
@@ -22,6 +33,11 @@ public class Deadline extends Task {
         return "D | " + getStatusIcon() + " | " + description + " | " + by;
     }
 
+    /**
+     * Checks if this deadline is due on the given date.
+     * @param date date to check
+     * @return true if due on the given date
+     */
     public boolean dueOn(LocalDate date) {
         return date.equals(by);
     }
@@ -39,6 +55,10 @@ public class Deadline extends Task {
         }
     }
 
+    /**
+     * Returns the due date of the deadline.
+     * @return due date
+     */
     public LocalDate getBy() {
         return this.by;
     }

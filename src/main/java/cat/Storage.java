@@ -6,14 +6,29 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * Handles saving and loading of tasks from a text file.
+ * A <code>Storage</code> object corresponds to a file on disk
+ * that contains serialized tasks, e.g., <code>./data/duke.txt</code>.
+ */
 public class Storage {
     private String filePath;
 
+    /**
+     * Creates a new storage object that uses the given file path.
+     * @param filePath path to the file, e.g., <code>./data/duke.txt</code>
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
-    //load file when program first opens
+    /**
+     * Loads tasks from the storage file.
+     * If the file does not exist, it is created.
+     * Corrupted lines are skipped.
+     * @return list of tasks read from file
+     * @throws IOException if the file cannot be read or created
+     */
     public ArrayList<Task> load() throws IOException {
         ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
@@ -41,6 +56,13 @@ public class Storage {
         return tasks;
     }
 
+    /**
+     * Saves the given tasks to the storage file.
+     * Each task is written in its save format, e.g.,
+     * <code>T | X | read book</code>.
+     * @param tasks list of tasks to save
+     * @throws IOException if the file cannot be written
+     */
     public void save(TaskList tasks) throws IOException {
         BufferedWriter bw = new BufferedWriter(new FileWriter(filePath));
         for (Task task : tasks.getTasks()) {
@@ -50,7 +72,12 @@ public class Storage {
         bw.close();
     }
 
-    //throws unchecked exceptions so no need to declare in method signature
+    /**
+     * Parses one line of text into a task object.
+     * @param line task data string, e.g., <code>D | 0 | return book | 2025-03-24</code>
+            * @return task parsed from the line
+     * @throws IllegalArgumentException if the task type is unknown
+     */
     public Task parseTask(String line) {
         String[] parts = line.split(" \\| ");
         String type = parts[0];
