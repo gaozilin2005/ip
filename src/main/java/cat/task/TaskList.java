@@ -84,9 +84,38 @@ public class TaskList {
     }
 
     /**
-     * Returns all tasks in this list.
+     * Searches for tasks whose descriptions contain the given keyword.
+     * If matching tasks are found, prints them with their details.
+     * Otherwise, prints a message saying no tasks were found.
+     *
+     * @param keyword the word or phrase to search for, e.g. <code>"book"</code>
      * @return list of tasks
-     */
+	*/
+    public void search(String keyword) {
+        ArrayList<Task> found = new ArrayList<>();
+
+        for (Task task : this.ls) {
+            if (task.getDescription().contains(keyword)) {
+                found.add(task);
+            }
+        }
+
+        if (found.size() != 0) {
+            printLine();
+            System.out.println("Here are the matching tasks in your list:");
+            int counter = 1;
+            for (Task task : found) {
+                System.out.println(counter + ". " + task.toString());
+                counter++;
+            }
+            printLine();
+        } else {
+            printLine();
+            System.out.println("No tasks found :(");
+            printLine();
+        }
+    }
+
     public ArrayList<Task> getTasks() {
         return this.ls;
     }

@@ -67,6 +67,10 @@ public class Cat {
                     String[] parts = input.split("due ");
                     LocalDate date = LocalDate.parse(parts[1]);
                     tasks.printDueOnDate(date);
+                } else if (input.startsWith("find")) {
+                    String[] parts = input.split("find ");
+                    String keyword = parts[1];
+                    tasks.search(keyword);
                 } else {
                     try {
                         Task task = Parser.parseTask(input);
