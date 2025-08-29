@@ -59,12 +59,12 @@ public class Storage {
         //will automatically throw exception if too few words
 
         switch (type) {
-            case "TODO":
+            case "T":
                 return new Todo(description, isDone);
-            case "DEADLINE":
+            case "D":
                 String by = parts[3];
                 return new Deadline(description, LocalDate.parse(by), isDone);
-            case "EVENT":
+            case "E":
                 String from = parts[3];
                 String to = parts[4];
                 return new Event(description, from, to, isDone);

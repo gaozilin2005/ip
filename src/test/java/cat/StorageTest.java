@@ -15,8 +15,8 @@ public class StorageTest {
     @Test
     public void load_validFile_noException() throws IOException {
         FileWriter fw = new FileWriter(testFilePath);
-        fw.write("TODO | X | read book\n");
-        fw.write("DEADLINE | X | submit report | 2025-09-01\n");
+        fw.write("T | X | read book\n");
+        fw.write("D | X | submit report | 2025-09-01\n");
         fw.close();
 
         Storage storage = new Storage(testFilePath);
@@ -31,7 +31,7 @@ public class StorageTest {
     public void load_invalidFile_Exception() throws IOException {
         FileWriter fw = new FileWriter(testFilePath);
         fw.write("ERROR ERROR\n");
-        fw.write("DEADLINE | X | submit report | 2025-09-01\n");
+        fw.write("D | X | submit report | 2025-09-01\n");
         fw.close();
 
         Storage storage = new Storage(testFilePath);

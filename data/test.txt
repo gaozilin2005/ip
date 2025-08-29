@@ -1,2 +1,2 @@
-ERROR ERROR
-DEADLINE | X | submit report | 2025-09-01
+T | X | read book
+D | X | submit report | 2025-09-01
