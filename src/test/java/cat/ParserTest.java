@@ -1,16 +1,17 @@
 package cat;
 
-import cat.exception.EmptyException;
-import cat.exception.InvalidException;
-import cat.task.*;
-
-import java.io.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
-
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.time.LocalDate;
+
+import org.junit.jupiter.api.Test;
+
+import cat.exception.EmptyException;
+import cat.exception.InvalidException;
+import cat.task.Deadline;
+import cat.task.Event;
+import cat.task.Task;
 
 public class ParserTest {
 

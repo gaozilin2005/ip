@@ -36,7 +36,8 @@ public class Event extends Task {
     public boolean equals(Object o) {
         if (this == o) {
             return true;
-        } if (!(o instanceof Event)) {
+        }
+        if (!(o instanceof Event)) {
             return false;
         } else {
             Event other = (Event) o;

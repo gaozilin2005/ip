@@ -1,12 +1,14 @@
 package cat;
 
-import cat.task.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.*;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import cat.task.Task;
 
 public class StorageTest {
 
@@ -28,7 +30,7 @@ public class StorageTest {
     }
 
     @Test
-    public void load_invalidFile_Exception() throws IOException {
+    public void load_invalidFile_exception() throws IOException {
         FileWriter fw = new FileWriter(testFilePath);
         fw.write("ERROR ERROR\n");
         fw.write("D | X | submit report | 2025-09-01\n");

@@ -1,15 +1,15 @@
 package cat;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 import cat.exception.EmptyException;
 import cat.exception.InvalidException;
 import cat.task.Task;
 import cat.task.TaskList;
 import cat.ui.Ui;
-
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * Main application class for the Cat task manager.
@@ -82,7 +82,7 @@ public class Cat {
                     }
                 }
                 storage.save(tasks);
-            }  catch (IOException e) {
+            } catch (IOException e) {
                 System.out.println("OOPS!!! Could not save tasks to file: " + e.getMessage());
             }
         }

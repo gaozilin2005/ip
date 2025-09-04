@@ -34,9 +34,9 @@ public abstract class Task {
      */
     public void markDone() {
         this.isDone = true;
-        System.out.println("____________________________________________________________\n" +
-                "Nice! I've marked this task as done: \n" + this +
-                "\n____________________________________________________________");
+        System.out.println("____________________________________________________________\n"
+                + "Nice! I've marked this task as done: \n" + this
+                + "\n____________________________________________________________");
     }
 
     /**
@@ -44,9 +44,9 @@ public abstract class Task {
      */
     public void unmarkDone() {
         this.isDone = false;
-        System.out.println("____________________________________________________________\n" +
-                "OK, I've marked this task as not done yet: \n" + this +
-                "\n____________________________________________________________");
+        System.out.println("____________________________________________________________\n"
+                + "OK, I've marked this task as not done yet: \n" + this
+                + "\n____________________________________________________________");
     }
 
     @Override

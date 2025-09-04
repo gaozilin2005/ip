@@ -52,9 +52,9 @@ public class TaskList {
      */
     public void delete(int taskNum) {
         this.printLine();
-        System.out.println("Noted. I've removed this task: \n" +
-                ls.get(taskNum) + "\n Now you have " + (ls.size() - 1) +
-                " tasks in the list.");
+        System.out.println("Noted. I've removed this task: \n"
+                + ls.get(taskNum) + "\n Now you have " + (ls.size() - 1)
+                + " tasks in the list.");
         this.printLine();
     }
 
@@ -89,8 +89,7 @@ public class TaskList {
      * Otherwise, prints a message saying no tasks were found.
      *
      * @param keyword the word or phrase to search for, e.g. <code>"book"</code>
-     * @return list of tasks
-	*/
+     */
     public void search(String keyword) {
         ArrayList<Task> found = new ArrayList<>();
 

@@ -17,14 +17,11 @@ dependencies {
 }
 
 application {
-    // Full package name + class of your main class
     mainClass = 'cat.Cat'
 }
 
 checkstyle {
-    toolVersion = '10.12.0'
-    // Remove this line if you don't have a custom config
-    // configDirectory = file('config/checkstyle')
+    toolVersion = '11.0.0'
 }
 
 shadowJar {

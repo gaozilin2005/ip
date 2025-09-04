@@ -46,7 +46,8 @@ public class Deadline extends Task {
     public boolean equals(Object o) {
         if (this == o) {
             return true;
-        } if (!(o instanceof Deadline)) {
+        }
+        if (!(o instanceof Deadline)) {
             return false;
         } else {
             Deadline other = (Deadline) o;

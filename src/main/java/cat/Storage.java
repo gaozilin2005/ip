@@ -1,20 +1,19 @@
 package cat;
 
-import cat.task.TaskList;
-import cat.task.Task;
-import cat.task.Event;
-import cat.task.Deadline;
-import cat.task.Todo;
-
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
+
+import cat.task.Deadline;
+import cat.task.Event;
+import cat.task.Task;
+import cat.task.TaskList;
+import cat.task.Todo;
 
 /**
  * Handles saving and loading of tasks from a text file.
@@ -96,17 +95,17 @@ public class Storage {
         //will automatically throw exception if too few words
 
         switch (type) {
-            case "T":
-                return new Todo(description, isDone);
-            case "D":
-                String by = parts[3];
-                return new Deadline(description, LocalDate.parse(by), isDone);
-            case "E":
-                String from = parts[3];
-                String to = parts[4];
-                return new Event(description, from, to, isDone);
-            default:
-                throw new IllegalArgumentException("Unknown task type: " + line);
+        case "T":
+            return new Todo(description, isDone);
+        case "D":
+            String by = parts[3];
+            return new Deadline(description, LocalDate.parse(by), isDone);
+        case "E":
+            String from = parts[3];
+            String to = parts[4];
+            return new Event(description, from, to, isDone);
+        default:
+            throw new IllegalArgumentException("Unknown task type: " + line);
         }
     }
 
