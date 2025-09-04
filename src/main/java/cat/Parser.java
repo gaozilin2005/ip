@@ -38,7 +38,7 @@ public class Parser {
             task = parseEvent(input);
         } else {
             throw new InvalidException(
-                    "OOPS!!! I'm sorry, but I don't know what that means :-(");
+                    "OOPS!!! I'm sorry, but I don't know what that means :-( \n");
         }
         return task;
     }
@@ -60,13 +60,7 @@ public class Parser {
 
         LocalDate by = null;
         while (by == null) {
-            try {
-                by = LocalDate.parse(parts[1]);
-            } catch (DateTimeParseException | ArrayIndexOutOfBoundsException e) {
-                System.out.println("Invalid date format! Please input date in yyyy-mm-dd.");
-                Scanner scanner = new Scanner(System.in);
-                parts[1] = scanner.nextLine();
-            }
+            by = LocalDate.parse(parts[1]);
         }
         return new Deadline(parts2[1], by, false);
     }

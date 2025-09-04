@@ -9,6 +9,7 @@ import java.util.ArrayList;
  */
 public class TaskList {
     private ArrayList<Task> ls;
+    private String LINE = "____________________________________________________________\n";
 
     /**
      * Creates a task list with the given tasks.
@@ -19,68 +20,69 @@ public class TaskList {
     }
 
     /**
-     * Prints all tasks in the list with their index.
+     * Formats all tasks in the list with their index.
      */
-    public void printList() {
-        this.printLine();
-        System.out.println("Here are the tasks in your list: ");
+    public String formatList() {
+        String output = LINE;
+        output += "Here are the tasks in your list: \n";
         for (int i = 0; i < ls.size(); i++) {
-            System.out.println(i + 1 + ". " + ls.get(i));
+            output += (i + 1 + ". " + ls.get(i));
+            output += "\n";
         }
-        this.printLine();
+        output += LINE;
+        return output;
     }
 
     /**
      * Marks a task as done.
      * @param taskNum index of task in list (0-based)
      */
-    public void markDone(int taskNum) {
-        this.ls.get(taskNum).markDone();
+    public String markDone(int taskNum) {
+        return this.ls.get(taskNum).markDone();
     }
 
     /**
      * Marks a task as not done.
      * @param taskNum index of task in list (0-based)
      */
-    public void unmarkDone(int taskNum) {
-        this.ls.get(taskNum).unmarkDone();
+    public String unmarkDone(int taskNum) {
+        return this.ls.get(taskNum).unmarkDone();
     }
 
     /**
      * Deletes a task from the list and prints a message.
      * @param taskNum index of task in list (0-based)
      */
-    public void delete(int taskNum) {
+    public String delete(int taskNum) {
         this.printLine();
-        System.out.println("Noted. I've removed this task: \n"
+        return ("Noted. I've removed this task: \n"
                 + ls.get(taskNum) + "\n Now you have " + (ls.size() - 1)
-                + " tasks in the list.");
-        this.printLine();
+                + " tasks in the list.\n" + LINE);
     }
 
     /**
      * Adds a task to the list and prints a message.
      * @param task the task to add
      */
-    public void add(Task task) {
+    public String add(Task task) {
         ls.add(task);
-        this.printLine();
-        System.out.println("Got it. I've added this task: \n" + task);
-        System.out.println("Now you have " + ls.size() + " tasks in the list.");
-        this.printLine();
+        return LINE + "Got it. I've added this task: \n" + task
+                + "\nNow you have " + ls.size() + " tasks in the list.\n"
+                + LINE;
     }
 
     /**
      * Prints all deadline tasks due on the given date.
      * @param date date to filter deadlines
      */
-    public void printDueOnDate(LocalDate date) {
+    public String dueOnDate(LocalDate date) {
+        String output = null;
         for (Task task : ls) {
             if (task instanceof Deadline && ((Deadline) task).dueOn(date)) {
-                System.out.println(task);
+                output += task;
             }
         }
-        this.printLine();
+        return output;
     }
 
     /**
@@ -90,7 +92,7 @@ public class TaskList {
      *
      * @param keyword the word or phrase to search for, e.g. <code>"book"</code>
      */
-    public void search(String keyword) {
+    public String search(String keyword) {
         ArrayList<Task> found = new ArrayList<>();
 
         for (Task task : this.ls) {
@@ -100,18 +102,18 @@ public class TaskList {
         }
 
         if (found.size() != 0) {
-            printLine();
-            System.out.println("Here are the matching tasks in your list:");
+            String output = null;
+            output += LINE;
+            output += "Here are the matching tasks in your list:\n";
             int counter = 1;
             for (Task task : found) {
-                System.out.println(counter + ". " + task.toString());
+                output += counter + ". " + task.toString();
                 counter++;
             }
-            printLine();
+            output += LINE;
+            return output;
         } else {
-            printLine();
-            System.out.println("No tasks found :(");
-            printLine();
+            return LINE + "No tasks found :(\n" + LINE;
         }
     }
 

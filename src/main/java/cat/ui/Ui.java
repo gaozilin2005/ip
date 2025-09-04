@@ -13,16 +13,6 @@ public class Ui {
     }
 
     /**
-     * Prints the greeting message shown when the program starts.
-     */
-    public void printGreeting() {
-        this.printLine();
-        System.out.println(" Hello :) I'm Cat");
-        System.out.print(" What can I do for you?\n");
-        this.printLine();
-    }
-
-    /**
      * Prints the goodbye message shown when the program ends.
      */
     public void printGoodbye() {

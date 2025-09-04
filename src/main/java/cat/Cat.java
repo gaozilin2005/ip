@@ -2,6 +2,7 @@ package cat;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -20,6 +21,7 @@ public class Cat {
     private TaskList tasks;
     private Storage storage;
     private Ui ui;
+    private String LINE = "____________________________________________________________\n";
 
     /**
      * Creates a Cat application with storage file <code>./data/duke.txt</code>.
@@ -37,65 +39,87 @@ public class Cat {
     }
 
     /**
-     * Runs the main application loop.
-     * Reads user input and executes commands until <code>bye</code> is entered.
-     * Supports commands such as <code>list</code>, <code>mark</code>, <code>unmark</code>,
-     * <code>delete</code>, <code>due</code>, and task creation.
+     * Returns the greeting shown at application startup.
+     *
+     * @return Greeting text for display.
      */
-    public void run() {
-        ui.printGreeting();
-        Scanner scanner = new Scanner(System.in);
-        String input;
-
-        while (!(input = scanner.nextLine()).equals("bye")) {
-            try {
-                if (input.equals("list")) {
-                    tasks.printList();
-                } else if (input.matches("^mark .+$")) {
-                    String[] parts = input.split(" ");
-                    int taskNum = Integer.parseInt(parts[1]) - 1;
-                    tasks.markDone(taskNum);
-                } else if (input.matches("^unmark .+$")) {
-                    String[] parts = input.split(" ");
-                    int taskNum = Integer.parseInt(parts[1]) - 1;
-                    tasks.unmarkDone(taskNum);
-                } else if (input.startsWith("delete")) {
-                    String[] parts = input.split("delete ");
-                    int taskNum = Integer.parseInt(parts[1]) - 1;
-                    tasks.delete(taskNum);
-                } else if (input.startsWith("due")) {
-                    String[] parts = input.split("due ");
-                    LocalDate date = LocalDate.parse(parts[1]);
-                    tasks.printDueOnDate(date);
-                } else if (input.startsWith("find")) {
-                    String[] parts = input.split("find ");
-                    String keyword = parts[1];
-                    tasks.search(keyword);
-                } else {
-                    try {
-                        Task task = Parser.parseTask(input);
-                        tasks.add(task);
-                    } catch (EmptyException | InvalidException e) {
-                        this.ui.printLine();
-                        System.out.println(e.getMessage());
-                        this.ui.printLine();
-                    }
-                }
-                storage.save(tasks);
-            } catch (IOException e) {
-                System.out.println("OOPS!!! Could not save tasks to file: " + e.getMessage());
-            }
-        }
-        ui.printGoodbye();
+    public String greeting() {
+        return LINE + "Hello :) I'm Cat\nWhat can I do for you?\n" + LINE;
     }
 
     /**
-     * Entry point for the application.
-     * @param args command line arguments (not used)
-     * @throws IOException if tasks cannot be loaded or saved
+     * Returns the goodbye message shown when the user exits.
+     *
+     * @return Goodbye text for display.
      */
-    public static void main(String[] args) throws IOException {
-        new Cat().run();
+    public String goodbye() {
+        return "Bye. Hope to see you again soon!\n" + LINE;
+    }
+
+    /**
+     * Processes a single user input line and returns the message to display.
+     * <p>
+     * This method is UI-agnostic and does not perform any printing. It mutates
+     * internal state as needed (e.g., adding/removing tasks) and persists to storage.
+     *
+     * @param input Raw user input (e.g., {@code "todo read book"}, {@code "list"}).
+     * @return A formatted message describing the outcome of the command.
+     */
+    public String respond(String input) {
+        if ("bye".equals(input)) {
+            return goodbye();
+        }
+        try {
+            String output = null;
+            if (input.equals("list")) {
+                output = tasks.formatList();
+                storage.save(tasks);
+                return output;
+            } else if (input.matches("^mark .+$")) {
+                String[] parts = input.split(" ");
+                int taskNum = Integer.parseInt(parts[1]) - 1;
+                output = tasks.markDone(taskNum);
+                storage.save(tasks);
+                return output;
+            } else if (input.matches("^unmark .+$")) {
+                String[] parts = input.split(" ");
+                int taskNum = Integer.parseInt(parts[1]) - 1;
+                output = tasks.unmarkDone(taskNum);
+                storage.save(tasks);
+                return output;
+            } else if (input.startsWith("delete")) {
+                String[] parts = input.split("delete ");
+                int taskNum = Integer.parseInt(parts[1]) - 1;
+                output = tasks.delete(taskNum);
+                storage.save(tasks);
+                return output;
+            } else if (input.startsWith("due")) {
+                String[] parts = input.split("due ");
+                LocalDate date = LocalDate.parse(parts[1]);
+                output = tasks.dueOnDate(date);
+                storage.save(tasks);
+                return output;
+            } else if (input.startsWith("find")) {
+                String[] parts = input.split("find ");
+                String keyword = parts[1];
+                output = tasks.search(keyword);
+                storage.save(tasks);
+                return output;
+            } else {
+                try {
+                    Task task = Parser.parseTask(input);
+                    output = tasks.add(task);
+                    storage.save(tasks);
+                    return output;
+                } catch (EmptyException | InvalidException e) {
+                    return LINE + e.getMessage() + LINE;
+                }
+            }
+        } catch (DateTimeParseException | ArrayIndexOutOfBoundsException e) {
+            return "Invalid date format! Please input date in yyyy-mm-dd.";
+        } catch (IOException e) {
+            return "OOPS!!! Could not save tasks to file: " + e.getMessage();
+        }
     }
 
 }

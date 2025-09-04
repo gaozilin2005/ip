@@ -1,6 +1,6 @@
 T |   | hello
 D |   | borrow book | 2005-03-24
-D |   | borrow book | 2024-03-24
+D | X | borrow book | 2024-03-24
 D |   | borrow book | 2025-01-01
 D |   | book | 2025-03-24
 D |   | food | 2024-03-24
@@ -16,3 +16,8 @@ D |   | one | 2024-03-24
 D |   | borrow book | 2005-03-24
 D |   | something | 2025-03-24
 T |   | somethinggg
+T |   | read book
+D |   | read book | 2024-03-24
+D |   | read | 2024-03-24
+D |   | read | 2024-03-24
+D |   | read | 2024-03-24

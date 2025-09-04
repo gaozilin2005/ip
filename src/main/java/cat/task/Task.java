@@ -30,11 +30,11 @@ public abstract class Task {
     }
 
     /**
-     * Marks the task as done and prints a confirmation.
+     * Marks the task as done and returns a confirmation.
      */
-    public void markDone() {
+    public String markDone() {
         this.isDone = true;
-        System.out.println("____________________________________________________________\n"
+        return ("____________________________________________________________\n"
                 + "Nice! I've marked this task as done: \n" + this
                 + "\n____________________________________________________________");
     }
@@ -42,9 +42,9 @@ public abstract class Task {
     /**
      * Marks the task as not done and prints a confirmation.
      */
-    public void unmarkDone() {
+    public String unmarkDone() {
         this.isDone = false;
-        System.out.println("____________________________________________________________\n"
+        return ("____________________________________________________________\n"
                 + "OK, I've marked this task as not done yet: \n" + this
                 + "\n____________________________________________________________");
     }
