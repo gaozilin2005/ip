@@ -21,7 +21,6 @@ public class Cat {
     private TaskList tasks;
     private Storage storage;
     private Ui ui;
-    private String LINE = "____________________________________________________________\n";
 
     /**
      * Creates a Cat application with storage file <code>./data/duke.txt</code>.
@@ -44,7 +43,7 @@ public class Cat {
      * @return Greeting text for display.
      */
     public String greeting() {
-        return LINE + "Hello :) I'm Cat\nWhat can I do for you?\n" + LINE;
+        return "Hello :) I'm Cat\nWhat can I do for you?\n";
     }
 
     /**
@@ -53,7 +52,7 @@ public class Cat {
      * @return Goodbye text for display.
      */
     public String goodbye() {
-        return "Bye. Hope to see you again soon!\n" + LINE;
+        return "Bye. Hope to see you again soon!\n";
     }
 
     /**
@@ -112,7 +111,7 @@ public class Cat {
                     storage.save(tasks);
                     return output;
                 } catch (EmptyException | InvalidException e) {
-                    return LINE + e.getMessage() + LINE;
+                    return e.getMessage();
                 }
             }
         } catch (DateTimeParseException | ArrayIndexOutOfBoundsException e) {

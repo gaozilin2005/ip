@@ -9,7 +9,6 @@ import java.util.ArrayList;
  */
 public class TaskList {
     private ArrayList<Task> ls;
-    private String LINE = "____________________________________________________________\n";
 
     /**
      * Creates a task list with the given tasks.
@@ -23,13 +22,11 @@ public class TaskList {
      * Formats all tasks in the list with their index.
      */
     public String formatList() {
-        String output = LINE;
-        output += "Here are the tasks in your list: \n";
+        String output = "Here are the tasks in your list: \n";
         for (int i = 0; i < ls.size(); i++) {
             output += (i + 1 + ". " + ls.get(i));
             output += "\n";
         }
-        output += LINE;
         return output;
     }
 
@@ -54,10 +51,9 @@ public class TaskList {
      * @param taskNum index of task in list (0-based)
      */
     public String delete(int taskNum) {
-        this.printLine();
         return ("Noted. I've removed this task: \n"
                 + ls.get(taskNum) + "\n Now you have " + (ls.size() - 1)
-                + " tasks in the list.\n" + LINE);
+                + " tasks in the list.\n");
     }
 
     /**
@@ -66,9 +62,8 @@ public class TaskList {
      */
     public String add(Task task) {
         ls.add(task);
-        return LINE + "Got it. I've added this task: \n" + task
-                + "\nNow you have " + ls.size() + " tasks in the list.\n"
-                + LINE;
+        return "Got it. I've added this task: \n" + task
+                + "\nNow you have " + ls.size() + " tasks in the list.\n";
     }
 
     /**
@@ -102,18 +97,15 @@ public class TaskList {
         }
 
         if (found.size() != 0) {
-            String output = null;
-            output += LINE;
-            output += "Here are the matching tasks in your list:\n";
+            String output = "Here are the matching tasks in your list:\n";
             int counter = 1;
             for (Task task : found) {
                 output += counter + ". " + task.toString();
                 counter++;
             }
-            output += LINE;
             return output;
         } else {
-            return LINE + "No tasks found :(\n" + LINE;
+            return "No tasks found :(\n";
         }
     }
 
@@ -136,12 +128,5 @@ public class TaskList {
      */
     public int getSize() {
         return this.ls.size();
-    }
-
-    /**
-     * Prints a line separator.
-     */
-    public void printLine() {
-        System.out.println("____________________________________________________________");
     }
 }
