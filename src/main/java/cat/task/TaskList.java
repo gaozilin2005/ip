@@ -2,6 +2,9 @@ package cat.task;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.stream.IntStream;
+
+import static java.util.stream.Collectors.joining;
 
 /**
  * Represents a list of tasks.
@@ -22,11 +25,11 @@ public class TaskList {
      * Formats all tasks in the list with their index.
      */
     public String formatList() {
+        if (ls.isEmpty()) return "No tasks yet.";
         String output = "Here are the tasks in your list: \n";
-        for (int i = 0; i < ls.size(); i++) {
-            output += (i + 1 + ". " + ls.get(i));
-            output += "\n";
-        }
+        output += IntStream.range(0, ls.size())
+                .mapToObj(i -> String.format("%d. %s", i + 1, ls.get(i)))
+                .collect(joining("\n"));
         return output;
     }
 
@@ -71,13 +74,11 @@ public class TaskList {
      * @param date date to filter deadlines
      */
     public String dueOnDate(LocalDate date) {
-        String output = null;
-        for (Task task : ls) {
-            if (task instanceof Deadline && ((Deadline) task).dueOn(date)) {
-                output += task;
-            }
-        }
-        return output;
+        var due = ls.stream()
+                .filter(t -> t instanceof Deadline && ((Deadline) t).dueOn(date))
+                .toList();
+        if (due.isEmpty()) return "No tasks due on " + date;
+        return due.stream().map(Task::toString).collect(joining("\n"));
     }
 
     /**
