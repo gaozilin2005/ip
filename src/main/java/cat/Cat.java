@@ -35,6 +35,10 @@ public class Cat {
             ui.showLoadingError();
             tasks = new TaskList(new ArrayList<>());
         }
+
+        assert ui != null : "UI must be initialized";
+        assert storage != null : "Storage must be initialized";
+        assert tasks != null : "Task list must be initialized";
     }
 
     /**
@@ -66,48 +70,58 @@ public class Cat {
      */
     public String respond(String input) {
         if ("bye".equals(input)) {
-            return goodbye();
+            String msg = goodbye();
+            assert msg != null : "Goodbye message cannot be empty";
+            return msg;
         }
         try {
-            String output = null;
+            String output;
             if (input.equals("list")) {
                 output = tasks.formatList();
+                assert output != null : "List output must not be empty";
                 storage.save(tasks);
                 return output;
             } else if (input.matches("^mark .+$")) {
                 String[] parts = input.split(" ");
                 int taskNum = Integer.parseInt(parts[1]) - 1;
                 output = tasks.markDone(taskNum);
+                assert output != null : "Mark output must not be empty";
                 storage.save(tasks);
                 return output;
             } else if (input.matches("^unmark .+$")) {
                 String[] parts = input.split(" ");
                 int taskNum = Integer.parseInt(parts[1]) - 1;
                 output = tasks.unmarkDone(taskNum);
+                assert output != null : "Unmark output must not be empty";
                 storage.save(tasks);
                 return output;
             } else if (input.startsWith("delete")) {
                 String[] parts = input.split("delete ");
                 int taskNum = Integer.parseInt(parts[1]) - 1;
                 output = tasks.delete(taskNum);
+                assert output != null : "Delete output must not be empty";
                 storage.save(tasks);
                 return output;
             } else if (input.startsWith("due")) {
                 String[] parts = input.split("due ");
                 LocalDate date = LocalDate.parse(parts[1]);
                 output = tasks.dueOnDate(date);
+                assert output != null : "Due output must not be empty";
                 storage.save(tasks);
                 return output;
             } else if (input.startsWith("find")) {
                 String[] parts = input.split("find ");
                 String keyword = parts[1];
                 output = tasks.search(keyword);
+                assert output != null : "Find output must not be empty";
                 storage.save(tasks);
                 return output;
             } else {
                 try {
                     Task task = Parser.parseTask(input);
+                    assert task != null : "Parsed task must not be null";
                     output = tasks.add(task);
+                    assert output != null : "Task output must not be empty";
                     storage.save(tasks);
                     return output;
                 } catch (EmptyException | InvalidException e) {

@@ -23,4 +23,4 @@ D |   | read | 2024-03-24
 D |   | read | 2024-03-24
 T |   | read book
 D |   | read book | 2025-03-24
-D |   | read book | monday to tuesday
+T |   | read book
