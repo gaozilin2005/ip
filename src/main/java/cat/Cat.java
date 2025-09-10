@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import cat.exception.EmptyException;
 import cat.exception.InvalidException;
@@ -18,6 +17,11 @@ import cat.ui.Ui;
  * task list updates, and saving to storage.
  */
 public class Cat {
+    private static final String DEFAULT_STORAGE_PATH = "./data/duke.txt";
+    private static final String DATE_ERROR_MESSAGE = "Invalid date format! Please input date in yyyy-mm-dd.";
+    private static final String SAVE_ERROR_PREFIX = "OOPS!!! Could not save tasks to file: ";
+    private static final int USER_INDEX_OFFSET = 1;
+
     private TaskList tasks;
     private Storage storage;
     private Ui ui;
@@ -28,7 +32,7 @@ public class Cat {
      */
     public Cat() {
         ui = new Ui();
-        storage = new Storage("./data/duke.txt");
+        storage = new Storage(DEFAULT_STORAGE_PATH);
         try {
             tasks = new TaskList(storage.load());
         } catch (IOException e) {
@@ -75,64 +79,93 @@ public class Cat {
             return msg;
         }
         try {
-            String output;
             if (input.equals("list")) {
-                output = tasks.formatList();
-                assert output != null : "List output must not be null";
-                storage.save(tasks);
-                return output;
-            } else if (input.matches("^mark .+$")) {
-                String[] parts = input.split(" ");
-                int taskNum = Integer.parseInt(parts[1]) - 1;
-                output = tasks.markDone(taskNum);
-                assert output != null : "Mark output must not be null";
-                storage.save(tasks);
-                return output;
-            } else if (input.matches("^unmark .+$")) {
-                String[] parts = input.split(" ");
-                int taskNum = Integer.parseInt(parts[1]) - 1;
-                output = tasks.unmarkDone(taskNum);
-                assert output != null : "Unmark output must not be null";
-                storage.save(tasks);
-                return output;
+                return handleList(input);
+            } else if (input.startsWith("mark")) {
+                return handleMark(input);
+            } else if (input.startsWith("unmark")) {
+                return handleUnmark(input);
             } else if (input.startsWith("delete")) {
-                String[] parts = input.split("delete ");
-                int taskNum = Integer.parseInt(parts[1]) - 1;
-                output = tasks.delete(taskNum);
-                assert output != null : "Delete output must not be null";
-                storage.save(tasks);
-                return output;
+                return handleDelete(input);
             } else if (input.startsWith("due")) {
-                String[] parts = input.split("due ");
-                LocalDate date = LocalDate.parse(parts[1]);
-                output = tasks.dueOnDate(date);
-                assert output != null : "Due output must not be null";
-                storage.save(tasks);
-                return output;
+                return handleDue(input);
             } else if (input.startsWith("find")) {
-                String[] parts = input.split("find ");
-                String keyword = parts[1];
-                output = tasks.search(keyword);
-                assert output != null : "Find output must not be null";
-                storage.save(tasks);
-                return output;
+                return handleFind(input);
             } else {
                 try {
-                    Task task = Parser.parseTask(input);
-                    assert task != null : "Parsed task must not be null";
-                    output = tasks.add(task);
-                    assert output != null : "Task output must not be null";
-                    storage.save(tasks);
-                    return output;
+                   return handleTask(input);
                 } catch (EmptyException | InvalidException e) {
                     return e.getMessage();
                 }
             }
         } catch (DateTimeParseException | ArrayIndexOutOfBoundsException e) {
-            return "Invalid date format! Please input date in yyyy-mm-dd.";
+            return DATE_ERROR_MESSAGE;
         } catch (IOException e) {
-            return "OOPS!!! Could not save tasks to file: " + e.getMessage();
+            return SAVE_ERROR_PREFIX + e.getMessage();
         }
     }
 
+    private String handleList(String input) throws IOException {
+        String output = tasks.formatList();
+        assert output != null : "List output must not be empty";
+        storage.save(tasks);
+        return output;
+    }
+
+    private String handleMark(String input) throws IOException {
+        int taskNum = getTaskNum(input);
+        String output = tasks.markDone(taskNum);
+        assert output != null : "Mark output must not be empty";
+        storage.save(tasks);
+        return output;
+    }
+
+    private String handleUnmark(String input) throws IOException {
+        int taskNum = getTaskNum(input);
+        String output = tasks.unmarkDone(taskNum);
+        assert output != null : "Unmark output must not be empty";
+        storage.save(tasks);
+        return output;
+    }
+
+    private int getTaskNum(String input) {
+        String[] parts = input.split(" ");
+        return Integer.parseInt(parts[1]) - USER_INDEX_OFFSET;
+    }
+
+    private String handleDelete(String input) throws IOException {
+        int taskNum = getTaskNum(input);
+        String output = tasks.delete(taskNum);
+        assert output != null : "Delete output must not be empty";
+        storage.save(tasks);
+        return output;
+    }
+
+    private String handleDue(String input) throws IOException {
+        String[] parts = input.split("due ");
+        LocalDate date = LocalDate.parse(parts[1]);
+        String output = tasks.dueOnDate(date);
+        assert output != null : "Due output must not be empty";
+        storage.save(tasks);
+        return output;
+    }
+
+    private String handleFind(String input) throws IOException {
+        String[] parts = input.split("find ");
+        String keyword = parts[1];
+        String output = tasks.search(keyword);
+        assert output != null : "Find output must not be empty";
+        storage.save(tasks);
+        return output;
+    }
+
+    private String handleTask(String input)
+            throws EmptyException, InvalidException, IOException {
+        Task task = Parser.parseTask(input);
+        assert task != null : "Parsed task must not be null";
+        String output = tasks.add(task);
+        assert output != null : "Task output must not be empty";
+        storage.save(tasks);
+        return output;
+    }
 }

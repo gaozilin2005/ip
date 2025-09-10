@@ -19,6 +19,7 @@ import cat.task.Todo;
  */
 public class Parser {
     public Parser() {
+        /* Utility class; do not instantiate. */
     }
 
     /**
@@ -29,6 +30,7 @@ public class Parser {
      * @throws InvalidException if the input does not match any known task type
      */
     public static Task parseTask(String input) throws EmptyException, InvalidException {
+        assert input != null : "input must not be null";
         Task task = null;
         if (input.startsWith("deadline")) {
             task = parseDeadline(input);
