@@ -106,6 +106,15 @@ public class Cat {
         }
     }
 
+    /**
+     * Produces a formatted listing of all tasks and persists the current state.
+     *
+     * <p>The {@code input} is ignored; this method simply renders the current task list.</p>
+     *
+     * @param input raw user input that triggered the list command (ignored)
+     * @return formatted list of tasks (never {@code null})
+     * @throws IOException if saving the task list fails
+     */
     private String handleList(String input) throws IOException {
         String output = tasks.formatList();
         assert output != null : "List output must not be empty";
@@ -113,6 +122,17 @@ public class Cat {
         return output;
     }
 
+    /**
+     * Marks the task identified by the 1-based index in {@code input} as done, then persists.
+     *
+     * <p>Expected input format: {@code "mark <index>"} where {@code <index>} is 1-based.</p>
+     *
+     * @param input command text containing a 1-based task index
+     * @return confirmation/updated list text (never {@code null})
+     * @throws IOException if saving the task list fails
+     * @throws NumberFormatException if the index token is not an integer
+     * @throws ArrayIndexOutOfBoundsException if the index token is missing
+     */
     private String handleMark(String input) throws IOException {
         int taskNum = getTaskNum(input);
         String output = tasks.markDone(taskNum);
@@ -121,6 +141,17 @@ public class Cat {
         return output;
     }
 
+    /**
+     * Unmarks the task identified by the 1-based index in {@code input}, then persists.
+     *
+     * <p>Expected input format: {@code "unmark <index>"} where {@code <index>} is 1-based.</p>
+     *
+     * @param input command text containing a 1-based task index
+     * @return confirmation/updated list text (never {@code null})
+     * @throws IOException if saving the task list fails
+     * @throws NumberFormatException if the index token is not an integer
+     * @throws ArrayIndexOutOfBoundsException if the index token is missing
+     */
     private String handleUnmark(String input) throws IOException {
         int taskNum = getTaskNum(input);
         String output = tasks.unmarkDone(taskNum);
@@ -129,11 +160,33 @@ public class Cat {
         return output;
     }
 
+    /**
+     * Extracts the zero-based task index from a command string.
+     *
+     * <p>Expected format: {@code "<command> <index>"} where {@code <index>} is 1-based.
+     * This method converts it to a zero-based index by subtracting {@code USER_INDEX_OFFSET}.</p>
+     *
+     * @param input command text containing a 1-based index as the second token
+     * @return zero-based task index
+     * @throws NumberFormatException if the index token is not an integer
+     * @throws ArrayIndexOutOfBoundsException if the index token is missing
+     */
     private int getTaskNum(String input) {
         String[] parts = input.split(" ");
         return Integer.parseInt(parts[1]) - USER_INDEX_OFFSET;
     }
 
+    /**
+     * Deletes the task identified by the 1-based index in {@code input}, then persists.
+     *
+     * <p>Expected input format: {@code "delete <index>"} where {@code <index>} is 1-based.</p>
+     *
+     * @param input command text containing a 1-based task index
+     * @return confirmation/updated list text (never {@code null})
+     * @throws IOException if saving the task list fails
+     * @throws NumberFormatException if the index token is not an integer
+     * @throws ArrayIndexOutOfBoundsException if the index token is missing
+     */
     private String handleDelete(String input) throws IOException {
         int taskNum = getTaskNum(input);
         String output = tasks.delete(taskNum);
@@ -142,6 +195,17 @@ public class Cat {
         return output;
     }
 
+    /**
+     * Lists tasks due on the ISO-8601 date that follows {@code "due "} in {@code input}, then persists.
+     *
+     * <p>Expected input format: {@code "due <YYYY-MM-DD>"}.</p>
+     *
+     * @param input command text containing an ISO date after {@code "due "}
+     * @return formatted list of matching tasks (never {@code null})
+     * @throws IOException if saving the task list fails
+     * @throws java.time.format.DateTimeParseException if the date cannot be parsed
+     * @throws ArrayIndexOutOfBoundsException if the date token is missing
+     */
     private String handleDue(String input) throws IOException {
         String[] parts = input.split("due ");
         LocalDate date = LocalDate.parse(parts[1]);
@@ -151,6 +215,16 @@ public class Cat {
         return output;
     }
 
+    /**
+     * Searches tasks using the keyword that follows {@code "find "} in {@code input}, then persists.
+     *
+     * <p>Expected input format: {@code "find <keyword>"}.</p>
+     *
+     * @param input command text containing a search keyword after {@code "find "}
+     * @return formatted list of matching tasks (never {@code null})
+     * @throws IOException if saving the task list fails
+     * @throws ArrayIndexOutOfBoundsException if the keyword token is missing
+     */
     private String handleFind(String input) throws IOException {
         String[] parts = input.split("find ");
         String keyword = parts[1];
@@ -160,6 +234,19 @@ public class Cat {
         return output;
     }
 
+    /**
+     * Parses a task creation command, adds the task to the list, and persists the updated state.
+     *
+     * <p>Examples of supported inputs (dependent on {@link Parser#parseTask(String)}):
+     * {@code "todo <desc>"}, {@code "deadline <desc> /by <YYYY-MM-DD>"},
+     * {@code "event <desc> /at <YYYY-MM-DD>"}.</p>
+     *
+     * @param input raw task creation command
+     * @return confirmation/updated list text (never {@code null})
+     * @throws EmptyException if the command lacks a required description or fields
+     * @throws InvalidException if the command format is invalid
+     * @throws IOException if saving the task list fails
+     */
     private String handleTask(String input)
             throws EmptyException, InvalidException, IOException {
         Task task = Parser.parseTask(input);
