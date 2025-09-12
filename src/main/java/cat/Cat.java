@@ -75,7 +75,7 @@ public class Cat {
     public String respond(String input) {
         if ("bye".equals(input)) {
             String msg = goodbye();
-            assert msg != null : "Goodbye message cannot be empty";
+            assert msg != null : "Goodbye message cannot be null";
             return msg;
         }
         try {
