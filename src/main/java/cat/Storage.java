@@ -6,8 +6,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import cat.task.Deadline;
 import cat.task.Event;
@@ -53,13 +57,12 @@ public class Storage {
         String line;
 
         //read each line until end of file
-        while ((line = br.readLine()) != null) {
-            try {
-                Task task = parseTask(line);
-                tasks.add(task);
-            } catch (Exception e) {
-                System.out.println("Skipping corrupted line: " + line);
-            }
+        try (Stream<String> lines = Files.lines(Path.of(filePath))) {
+            lines.map(this::parseTask).map(x -> tasks.add(x));
+            return tasks;
+        }
+        catch (Exception e) {
+            System.out.println("Skipping corrupted line");
         }
         br.close();
         return tasks;
