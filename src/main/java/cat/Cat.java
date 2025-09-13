@@ -91,6 +91,8 @@ public class Cat {
                 return handleDue(input);
             } else if (input.startsWith("find")) {
                 return handleFind(input);
+            } else if (input.startsWith("alias")) {
+                return Parser.addAlias(input);
             } else {
                 try {
                    return handleTask(input);
