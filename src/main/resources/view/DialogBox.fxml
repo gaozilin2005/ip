@@ -1,39 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
 
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
 <fx:root type="javafx.scene.layout.HBox"
          xmlns="http://javafx.com/javafx/17"
          xmlns:fx="http://javafx.com/fxml/1"
          alignment="TOP_RIGHT"
          spacing="10"
-         prefWidth="400.0"
-         maxWidth="1.7976931348623157E308"
-         maxHeight="1.7976931348623157E308"
          styleClass="dialog-row">
 
     <children>
-        <!-- Message bubble -->
-        <Label fx:id="dialog"
-               wrapText="true"
-               minHeight="-Infinity"
-               maxWidth="520.0"
-               HBox.hgrow="ALWAYS"
-               styleClass="bubble"/>
+        <!-- Bubble becomes a TextFlow -->
+        <TextFlow fx:id="bubble" styleClass="bubble" HBox.hgrow="ALWAYS"
+                  maxWidth="1.7976931348623157E308">
+            <children>
+                <Text fx:id="dialogText"/>
+            </children>
+        </TextFlow>
 
-        <!-- Avatar -->
-        <ImageView fx:id="displayPicture"
-                   fitHeight="99.0"
-                   fitWidth="99.0"
-                   pickOnBounds="true"
-                   preserveRatio="true"
-                   styleClass="avatar"/>
+        <ImageView fx:id="displayPicture" styleClass="avatar"
+                   fitHeight="99.0" fitWidth="99.0" preserveRatio="true"/>
     </children>
-
-    <padding>
-        <Insets top="15.0" right="5.0" bottom="15.0" left="5.0"/>
-    </padding>
 </fx:root>
+

@@ -54,9 +54,10 @@ public class TaskList {
      * @param taskNum index of task in list (0-based)
      */
     public String delete(int taskNum) {
+        Task removed = ls.get(taskNum);
+        ls.remove(taskNum);
         return ("Noted. I've removed this task: \n"
-                + ls.get(taskNum) + "\n Now you have " + (ls.size() - 1)
-                + " tasks in the list.\n");
+                + removed + "\n Now you have " + ls.size() + " tasks in the list.\n");
     }
 
     /**

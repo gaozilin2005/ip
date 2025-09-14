@@ -1,13 +1,2 @@
-T |   | read book
 T |   | read
 T |   | read
-T |   | read
-T |   | read
-T |   | read book
-T |   | study
-T |   | read
-T |   | read
-T |   | read
-D |   | read | monday to sunday
-T |   | buy book
-

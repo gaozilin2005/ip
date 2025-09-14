@@ -64,8 +64,6 @@ public class Parser {
             task = parseTodo(parts[1]);
         } else if (command.equals("event")) {
             task = parseEvent(parts[1]);
-//        } else if (command.equals("alias")) {
-//            addAlias(parts[1]);
         } else {
             throw new InvalidException(
                     "OOPS!!! I'm sorry, but I don't know what that means :-( \n");

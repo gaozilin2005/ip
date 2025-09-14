@@ -10,18 +10,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
-import java.util.Collections;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 /**
  * Represents a dialog box consisting of an ImageView to represent the speaker's face
@@ -29,10 +22,9 @@ import javafx.scene.layout.HBox;
  */
 public class DialogBox extends HBox {
 
-    @FXML
-    private Label dialog;
-    @FXML
-    private ImageView displayPicture;
+    @FXML private ImageView displayPicture;
+    @FXML private TextFlow bubble;
+    @FXML private Text dialogText;
 
     public DialogBox(String text, Image img) {
         try {
@@ -44,7 +36,10 @@ public class DialogBox extends HBox {
             e.printStackTrace();
         }
 
-        dialog.setText(text);
+        dialogText.setText(text);
+        // wrap to bubble width (minus a little inner padding)
+        dialogText.wrappingWidthProperty().bind(bubble.widthProperty().subtract(20));
+
         displayPicture.setImage(img);
     }
 
@@ -64,7 +59,7 @@ public class DialogBox extends HBox {
     public static DialogBox getUserDialog(String s, Image i) {
         DialogBox db = new DialogBox(s, i);
         db.getStyleClass().add("user-row");             // row side
-        db.dialog.getStyleClass().add("user-bubble");   // bubble side
+        db.bubble.getStyleClass().add("user-bubble");   // bubble side
         return db;
     }
 
@@ -74,7 +69,7 @@ public class DialogBox extends HBox {
         DialogBox db = new DialogBox(s, i);
         db.flip();                                      // put avatar left
         db.getStyleClass().add("app-row");
-        db.dialog.getStyleClass().add("app-bubble");
+        db.bubble.getStyleClass().add("app-bubble");
         return db;
     }
 }

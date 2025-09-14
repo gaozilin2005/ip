@@ -2,15 +2,15 @@
    - app-bubble = pink with right-side tail
    - user-bubble = purple with left-side tail
    This creates a clearer asymmetric chat layout. */
-   
+
 /* === Base bubble style (shared) === */
 .bubble {
     -fx-padding: 10 14;
-    -fx-wrap-text: true;
     -fx-border-width: 2px;
     -fx-font-size: 14px;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 6, 0.4, 0, 2);
     -fx-max-width: 480; /* messages wrap instead of stretching */
+    -fx-text-overrun: clip;
 }
 
 /* === App (response) bubble === */
@@ -18,8 +18,9 @@
     -fx-background-color: #f4dbe9;   /* light pink */
     -fx-text-fill: #4a1a2c;          /* deep wine text */
     -fx-border-color: #f4dbe9;
-    -fx-background-radius: 1em 1em 0 1em;   /* asymmetric shape */
-    -fx-border-radius: 1em 1em 0 1em;
+    -fx-background-radius: 1em 1em 1em 0;   /* asymmetric shape */
+    -fx-border-radius: 1em 1em 1em 0;
+    -fx-text-overrun: clip;
 }
 
 /* === User (prompt) bubble === */
@@ -27,9 +28,10 @@
     -fx-background-color: #cdd0f8;   /* soft purple/lavender */
     -fx-text-fill: #2c004d;          /* dark purple text */
     -fx-border-color: #cdd0f8;
-    -fx-background-radius: 1em 1em 1em 0;   /* mirrored shape */
-    -fx-border-radius: 1em 1em 1em 0;
+    -fx-background-radius: 1em 1em 0 1em;   /* mirrored shape */
+    -fx-border-radius: 1em 1em 0 1em;
     -fx-font-weight: bold;
+    -fx-text-overrun: clip;
 }
 
 /* app-side avatar (slightly smaller) */
