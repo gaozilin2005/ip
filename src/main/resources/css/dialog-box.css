@@ -1,24 +1,40 @@
-.label {
-    -fx-background-color: linear-gradient(to bottom right, #00ffbf, #00ddff);
-    -fx-border-color: #d55e00 #009e73 #cc79a7 #0072b2;
+/* === Base bubble style (shared) === */
+.bubble {
+    -fx-padding: 10 14;
+    -fx-wrap-text: true;
     -fx-border-width: 2px;
-    -fx-background-radius: 1em 1em 0 1em;
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 6, 0.4, 0, 2);
+    -fx-max-width: 480; /* messages wrap instead of stretching */
+}
+
+/* === App (response) bubble === */
+.app-bubble {
+    -fx-background-color: #f4dbe9;   /* light pink */
+    -fx-text-fill: #4a1a2c;          /* deep wine text */
+    -fx-border-color: #f4dbe9;
+    -fx-background-radius: 1em 1em 0 1em;   /* asymmetric shape */
     -fx-border-radius: 1em 1em 0 1em;
 }
 
-.reply-label {
-    -fx-background-radius: 1em 1em 1em 0;
+/* === User (prompt) bubble === */
+.user-bubble {
+    -fx-background-color: #cdd0f8;   /* soft purple/lavender */
+    -fx-text-fill: #2c004d;          /* dark purple text */
+    -fx-border-color: #cdd0f8;
+    -fx-background-radius: 1em 1em 1em 0;   /* mirrored shape */
     -fx-border-radius: 1em 1em 1em 0;
+    -fx-font-weight: bold;
 }
 
-#displayPicture {
-    /* Shadow effect on image. */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 5, 5);
+/* app-side avatar (slightly smaller) */
+.app-row .avatar {
+    -fx-fit-width: 70px;
+    -fx-fit-height: 70px;
+}
 
-    /* Change size of image. */
-    -fx-scale-x: 1;
-    -fx-scale-y: 1;
-
-    /* Rotate image clockwise by degrees. */
-    -fx-rotate: 0;
+/* user-side avatar (leave at full size) */
+.user-row .avatar {
+    -fx-fit-width: 99px;
+    -fx-fit-height: 99px;
 }

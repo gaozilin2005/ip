@@ -1,25 +1,31 @@
 .root {
-    main-color: rgb(237, 255, 242);       /* Create a looked-up color called "main-color" within root. */
+    main-color: #fff0f1;       /* Create a looked-up color called "main-color" within root. */
+    user-color: #f4dbe9;          /* user side base */
+    app-color:  linear-gradient(to bottom right, #00ffbf, #00ddff); /* app side base */
+    user-text:  #0f3d2e;
+    app-text:   #063746;
+
     -fx-background-color: main-color;
+    -fx-font-family: "Arial";
 }
 
 .text-field {
-    -fx-background-color: #d9ffe2;
-    -fx-font: 20px "Arial";
+    -fx-background-color: user-color;
+    -fx-font: 20px;
 }
 
 .button {
-    -fx-background-color: mediumspringgreen;
+    -fx-background-color: #ffcae9;
     -fx-font: italic bold 16px "Arial";
 }
 
 .button:hover {
-    -fx-background-color:cyan;
+    -fx-background-color:#ffcae9;
     -fx-font-size: 18px;
 }
 
 .button:pressed {
-    -fx-background-color:orange;
+    -fx-background-color:fa9bcf;
     -fx-font-size: 20px;
 }
 
@@ -44,3 +50,32 @@
     -fx-pref-height: 0;
     -fx-opacity: 0;
 }
+
+/* ====== conversation layout ======
+   Use these on the HBox/VBox rows that hold avatar + bubble
+*/
+.dialog-row { -fx-padding: 6 12; }
+.app-row  { -fx-alignment: TOP_LEFT; }
+.user-row { -fx-alignment: TOP_RIGHT; }
+
+/* optional: space avatar away from bubble depending on side */
+.app-row .avatar  { -fx-padding: 0 8 0 0; }  /* avatar on left */
+.user-row .avatar { -fx-padding: 0 0 0 8; }  /* avatar on right */
+
+/* subtle differentiation via letter-spacing/line-height (optional) */
+.app-bubble { -fx-line-spacing: 2; }
+.user-bubble { -fx-line-spacing: 1; }
+
+/* timestamps or small meta under each bubble */
+.meta {
+    -fx-font-size: 11px;
+    -fx-text-fill: rgba(0,0,0,0.45);
+    -fx-padding: 2 6 0 6;
+}
+
+/* avatars
+.avatar, #displayPicture {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.20), 10, 0.5, 5, 5);
+    -fx-scale-x: 1; -fx-scale-y: 1; -fx-rotate: 0;
+    -fx-background-radius: 50%;
+} */

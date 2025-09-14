@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import cat.exception.EmptyException;
 import cat.exception.InvalidException;
 import cat.task.Deadline;
@@ -22,6 +25,20 @@ public class Parser {
         /* Utility class; do not instantiate. */
     }
 
+    private static final Map<String, String> ALIASES = new HashMap<>();
+    static {
+        //Define aliases for each command
+        ALIASES.put("dl", "deadline");
+        ALIASES.put("due", "deadline");
+        ALIASES.put("d", "deadline");
+
+        ALIASES.put("td", "todo");
+        ALIASES.put("t", "todo");
+
+        ALIASES.put("ev", "event");
+        ALIASES.put("e", "event");
+    }
+
     /**
      * Parses a task from a user input string.
      * @param input user input, e.g. <code>todo homework</code>
@@ -32,17 +49,48 @@ public class Parser {
     public static Task parseTask(String input) throws EmptyException, InvalidException {
         assert input != null : "input must not be null";
         Task task = null;
-        if (input.startsWith("deadline")) {
-            task = parseDeadline(input);
-        } else if (input.startsWith("todo")) {
-            task = parseTodo(input);
-        } else if (input.startsWith("event")) {
-            task = parseEvent(input);
+
+        String[] parts = input.split(" ", 2);
+        String command = normalizeAlias(parts[0]);
+
+        if (parts.length == 1) {
+            throw new EmptyException(
+                    "OOPS!!! The description of a todo cannot be empty.");
+        }
+
+        if (command.equals("deadline")) {
+            task = parseDeadline(parts[1]);
+        } else if (command.equals("todo")) {
+            task = parseTodo(parts[1]);
+        } else if (command.equals("event")) {
+            task = parseEvent(parts[1]);
+//        } else if (command.equals("alias")) {
+//            addAlias(parts[1]);
         } else {
             throw new InvalidException(
                     "OOPS!!! I'm sorry, but I don't know what that means :-( \n");
         }
         return task;
+    }
+
+    public static String addAlias(String both) {
+        String[] parts = both.split(" ");
+        String canon = parts[2];
+        String alias = parts[1];
+        ALIASES.put(alias, canon);
+        return "Nice! " + alias + " added as an alias for " + canon;
+    }
+
+    /**
+     * Normalizes an input command keyword to its canonical form.
+     * If the keyword is an alias, return the mapped canonical command.
+     * Otherwise, return the original word.
+     *
+     * @param keyword the first word of the input
+     * @return canonical command word (e.g., "deadline", "todo", "event")
+     */
+    public static String normalizeAlias(String keyword) {
+        return ALIASES.getOrDefault(keyword.toLowerCase(), keyword.toLowerCase());
     }
 
     /**
@@ -58,13 +106,12 @@ public class Parser {
             throw new EmptyException(
                     "OOPS!!! A deadline should follow the format \"deadline [task] /by [date in yyyy-mm-dd]");
         }
-        String[] parts2 = parts[0].split("deadline ");
 
         LocalDate by = null;
         while (by == null) {
             by = LocalDate.parse(parts[1]);
         }
-        return new Deadline(parts2[1], by, false);
+        return new Deadline(parts[0], by, false);
     }
 
     /**
@@ -75,12 +122,7 @@ public class Parser {
      * @throws EmptyException if the description is missing
      */
     public static Task parseTodo(String input) throws EmptyException {
-        String[] parts = input.split("todo ");
-        if (parts.length == 1) {
-            throw new EmptyException(
-                    "OOPS!!! The description of a todo cannot be empty.");
-        }
-        return new Todo(parts[1], false);
+        return new Todo(input, false);
     }
 
     /**
@@ -91,21 +133,16 @@ public class Parser {
      * @throws EmptyException if the description, start, or end is missing
      */
     public static Task parseEvent(String input) throws EmptyException {
-        String[] parts = input.split("event ");
+        String[] parts = input.split(" /from ");
         if (parts.length == 1) {
             throw new EmptyException(
                     "OOPS!!! A event should follow the format \"event [event] /from [date] /to [date]");
         }
-        String[] parts2 = parts[1].split(" /from ");
+        String[] parts2 = parts[1].split(" /to ");
         if (parts2.length == 1) {
             throw new EmptyException(
                     "OOPS!!! A event should follow the format \"event [event] /from [date] /to [date]");
         }
-        String[] parts3 = parts2[1].split(" /to ");
-        if (parts3.length == 1) {
-            throw new EmptyException(
-                    "OOPS!!! A event should follow the format \"event [event] /from [date] /to [date]");
-        }
-        return new Event(parts2[0], parts3[0], parts3[1], false);
+        return new Event(parts[0], parts2[0], parts2[1], false);
     }
 }
