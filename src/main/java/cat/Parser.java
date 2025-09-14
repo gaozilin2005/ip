@@ -1,8 +1,6 @@
 package cat;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.util.Scanner;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -71,6 +69,20 @@ public class Parser {
         return task;
     }
 
+    /**
+     * Adds a new alias mapping for a command keyword.
+     * <p>
+     * Expected input format: {@code "alias <alias> <canonical>"}.
+     * For example, {@code "alias dl deadline"} will add {@code dl}
+     * as an alias for the {@code deadline} command.
+     * </p>
+     *
+     * @param both the full user input string containing the alias
+     *             definition in the format {@code alias <alias> <canonical>}
+     * @return confirmation message showing the alias and its canonical command
+     * @throws ArrayIndexOutOfBoundsException if the input does not contain
+     *                                        enough parts
+     */
     public static String addAlias(String both) {
         String[] parts = both.split(" ");
         String canon = parts[2];

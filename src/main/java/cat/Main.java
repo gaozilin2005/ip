@@ -2,12 +2,8 @@ package cat;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -34,7 +30,7 @@ public class Main extends Application {
             // Load base UI styles first
             scene.getStylesheets().add(Main.class.getResource("/css/main.css").toExternalForm());
 
-// Load dialog/bubble styles AFTER so they win if there are overlaps
+            // Load dialog/bubble styles AFTER so they win if there are overlaps
             scene.getStylesheets().add(Main.class.getResource("/css/dialog-box.css").toExternalForm());
 
 
@@ -43,7 +39,7 @@ public class Main extends Application {
             stage.setMinHeight(220);
             stage.setMinWidth(417);
 
-            fxmlLoader.<MainWindow>getController().setCat(cat);  // inject the Duke instance
+            fxmlLoader.<MainWindow>getController().setCat(cat);  // inject the Cat instance
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

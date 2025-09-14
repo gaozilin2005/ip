@@ -15,21 +15,11 @@ public class Todo extends Task {
         super(description, isDone);
     }
 
-    /**
-     * Returns the string representation of this todo for display.
-     * Example: <code>[T] [ ] read book</code>
-     * @return formatted string
-     */
     @Override
     public String toString() {
         return "[T] " + super.toString();
     }
 
-    /**
-     * Returns the string format used to save this todo to storage.
-     * Example: <code>T | 0 | read book</code>
-     * @return save format string
-     */
     @Override
     public String toSaveFormat() {
         return "T | " + getStatusIcon() + " | " + description;

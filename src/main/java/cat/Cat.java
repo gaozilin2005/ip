@@ -17,7 +17,7 @@ import cat.ui.Ui;
  * task list updates, and saving to storage.
  */
 public class Cat {
-    private static final String DEFAULT_STORAGE_PATH = "./data/duke.txt";
+    private static final String DEFAULT_STORAGE_PATH = "./data/cat.txt";
     private static final String DATE_ERROR_MESSAGE = "Invalid date format! Please input date in yyyy-mm-dd.";
     private static final String SAVE_ERROR_PREFIX = "OOPS!!! Could not save tasks to file: ";
     private static final int USER_INDEX_OFFSET = 1;
@@ -27,7 +27,7 @@ public class Cat {
     private Ui ui;
 
     /**
-     * Creates a Cat application with storage file <code>./data/duke.txt</code>.
+     * Creates a Cat application with storage file <code>./data/cat.txt</code>.
      * Loads tasks from storage if available, otherwise starts with an empty list.
      */
     public Cat() {
@@ -43,15 +43,6 @@ public class Cat {
         assert ui != null : "UI must be initialized";
         assert storage != null : "Storage must be initialized";
         assert tasks != null : "Task list must be initialized";
-    }
-
-    /**
-     * Returns the greeting shown at application startup.
-     *
-     * @return Greeting text for display.
-     */
-    public String greeting() {
-        return "hiii i'm cat\nwhat can i do for you?\n";
     }
 
     /**

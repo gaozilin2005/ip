@@ -17,14 +17,14 @@ import cat.task.Todo;
 /**
  * Handles saving and loading of tasks from a text file.
  * A <code>Storage</code> object corresponds to a file on disk
- * that contains serialized tasks, e.g., <code>./data/duke.txt</code>.
+ * that contains serialized tasks, e.g., <code>./data/cat.txt</code>.
  */
 public class Storage {
     private final Path filePath;
 
     /**
      * Creates a new storage object that uses the given file path.
-     * @param filePath path to the file, e.g., <code>./data/duke.txt</code>
+     * @param filePath path to the file, e.g., <code>./data/cat.txt</code>
      */
     public Storage(String filePath) {
         this.filePath = Path.of(filePath);

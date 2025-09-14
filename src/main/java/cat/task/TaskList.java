@@ -111,24 +111,16 @@ public class TaskList {
         }
     }
 
+    /**
+     * Returns the underlying list of tasks managed by this {@code TaskList}.
+     * <p>
+     * The returned {@link ArrayList} is the actual internal storage, not a copy.
+     * Modifications to this list will directly affect the {@code TaskList}.
+     * </p>
+     *
+     * @return the list of {@link Task} objects currently stored in this task list
+     */
     public ArrayList<Task> getTasks() {
         return this.ls;
-    }
-
-    /**
-     * Returns the description of a task at a given index.
-     * @param num index of the task
-     * @return description of the task
-     */
-    public String getDescription(int num) {
-        return this.ls.get(num).getDescription();
-    }
-
-    /**
-     * Returns the number of tasks in the list.
-     * @return number of tasks
-     */
-    public int getSize() {
-        return this.ls.size();
     }
 }
