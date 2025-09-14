@@ -59,12 +59,17 @@ public class DialogBox extends HBox {
     }
 
     public static DialogBox getUserDialog(String s, Image i) {
-        return new DialogBox(s, i);
+        DialogBox db = new DialogBox(s, i);
+        db.getStyleClass().add("user-row");             // row side
+        db.dialog.getStyleClass().add("user-bubble");   // bubble side
+        return db;
     }
 
     public static DialogBox getDukeDialog(String s, Image i) {
-        var db = new DialogBox(s, i);
-        db.flip();
+        DialogBox db = new DialogBox(s, i);
+        db.flip();                                      // put avatar left
+        db.getStyleClass().add("app-row");
+        db.dialog.getStyleClass().add("app-bubble");
         return db;
     }
 }

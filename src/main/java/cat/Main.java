@@ -30,6 +30,14 @@ public class Main extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
+
+            // Load base UI styles first
+            scene.getStylesheets().add(Main.class.getResource("/css/main.css").toExternalForm());
+
+// Load dialog/bubble styles AFTER so they win if there are overlaps
+            scene.getStylesheets().add(Main.class.getResource("/css/dialog-box.css").toExternalForm());
+
+
             stage.setScene(scene);
 
             stage.setMinHeight(220);
