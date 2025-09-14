@@ -9,3 +9,4 @@ T |   | read
 T |   | read
 T |   | read
 D |   | read | monday to sunday
+T |   | buy book
