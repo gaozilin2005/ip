@@ -58,6 +58,9 @@ public class DialogBox extends HBox {
         this.getChildren().setAll(tmp);
     }
 
+    // AI-assisted: ChatGPT suggested attaching role-specific CSS classes here
+    // so that user messages (purple bubbles) can be styled separately from
+    // app messages (pink bubbles).
     public static DialogBox getUserDialog(String s, Image i) {
         DialogBox db = new DialogBox(s, i);
         db.getStyleClass().add("user-row");             // row side
@@ -65,6 +68,8 @@ public class DialogBox extends HBox {
         return db;
     }
 
+    // AI-assisted: ChatGPT guided adding "app-row" and "app-bubble" classes
+    // for asymmetric chat layout and pink styling.
     public static DialogBox getDukeDialog(String s, Image i) {
         DialogBox db = new DialogBox(s, i);
         db.flip();                                      // put avatar left

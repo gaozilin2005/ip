@@ -1,3 +1,8 @@
+/* AI-assisted: ChatGPT helped design these color schemes and bubble shapes
+   - app-bubble = pink with right-side tail
+   - user-bubble = purple with left-side tail
+   This creates a clearer asymmetric chat layout. */
+   
 /* === Base bubble style (shared) === */
 .bubble {
     -fx-padding: 10 14;
