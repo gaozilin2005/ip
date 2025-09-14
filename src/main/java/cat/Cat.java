@@ -51,7 +51,7 @@ public class Cat {
      * @return Greeting text for display.
      */
     public String greeting() {
-        return "Hello :) I'm Cat\nWhat can I do for you?\n";
+        return "hiii i'm cat\nwhat can i do for you?\n";
     }
 
     /**
@@ -60,7 +60,7 @@ public class Cat {
      * @return Goodbye text for display.
      */
     public String goodbye() {
-        return "Bye. Hope to see you again soon!\n";
+        return "byeee <3\n";
     }
 
     /**

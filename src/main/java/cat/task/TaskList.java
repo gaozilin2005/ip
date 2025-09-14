@@ -25,8 +25,8 @@ public class TaskList {
      * Formats all tasks in the list with their index.
      */
     public String formatList() {
-        if (ls.isEmpty()) return "No tasks yet.";
-        String output = "Here are the tasks in your list: \n";
+        if (ls.isEmpty()) return "oops no tasks yet";
+        String output = "here are the tasks in your list! \n";
         output += IntStream.range(0, ls.size())
                 .mapToObj(i -> String.format("%d. %s", i + 1, ls.get(i)))
                 .collect(joining("\n"));
@@ -56,8 +56,8 @@ public class TaskList {
     public String delete(int taskNum) {
         Task removed = ls.get(taskNum);
         ls.remove(taskNum);
-        return ("Noted. I've removed this task: \n"
-                + removed + "\n Now you have " + ls.size() + " tasks in the list.\n");
+        return ("okayy i've removed this task: \n"
+                + removed + "\n now you have " + ls.size() + " tasks in the list.\n");
     }
 
     /**
@@ -66,8 +66,8 @@ public class TaskList {
      */
     public String add(Task task) {
         ls.add(task);
-        return "Got it. I've added this task: \n" + task
-                + "\nNow you have " + ls.size() + " tasks in the list.\n";
+        return "got it!! i've added this task: \n" + task
+                + "\nnow you have " + ls.size() + " tasks in the list.\n";
     }
 
     /**
@@ -78,7 +78,7 @@ public class TaskList {
         var due = ls.stream()
                 .filter(t -> t instanceof Deadline && ((Deadline) t).dueOn(date))
                 .toList();
-        if (due.isEmpty()) return "No tasks due on " + date;
+        if (due.isEmpty()) return "yay no tasks due on " + date;
         return due.stream().map(Task::toString).collect(joining("\n"));
     }
 
@@ -99,7 +99,7 @@ public class TaskList {
         }
 
         if (found.size() != 0) {
-            String output = "Here are the matching tasks in your list:\n";
+            String output = "here are the matching tasks in your list:\n";
             int counter = 1;
             for (Task task : found) {
                 output += counter + ". " + task.toString();
@@ -107,7 +107,7 @@ public class TaskList {
             }
             return output;
         } else {
-            return "No tasks found :(\n";
+            return "uhoh no tasks found :(\n";
         }
     }
 
