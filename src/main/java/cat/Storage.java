@@ -1,17 +1,12 @@
 package cat;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.List;
 
 import cat.task.Deadline;
 import cat.task.Event;
@@ -25,14 +20,14 @@ import cat.task.Todo;
  * that contains serialized tasks, e.g., <code>./data/duke.txt</code>.
  */
 public class Storage {
-    private String filePath;
+    private final Path filePath;
 
     /**
      * Creates a new storage object that uses the given file path.
      * @param filePath path to the file, e.g., <code>./data/duke.txt</code>
      */
     public Storage(String filePath) {
-        this.filePath = filePath;
+        this.filePath = Path.of(filePath);
     }
 
     /**
@@ -44,27 +39,31 @@ public class Storage {
      */
     public ArrayList<Task> load() throws IOException {
         ArrayList<Task> tasks = new ArrayList<>();
-        File file = new File(filePath);
-        file.getParentFile().mkdirs();
-        //check if file exists, if doesn't exist create one
-        if (!file.exists()) {
-            file.createNewFile();
-            return tasks;
-        }
 
-        //open file for reading
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        String line;
+        // Ensure parent directory exists
+        Path dir = filePath.getParent();
+        if (dir != null) {
+            Files.createDirectories(dir);
+        }
+        // Ensure file exists
+        if (Files.notExists(filePath)) {
+            Files.createFile(filePath);
+            return new ArrayList<>();
+        }
 
         //read each line until end of file
-        try (Stream<String> lines = Files.lines(Path.of(filePath))) {
-            lines.map(this::parseTask).map(x -> tasks.add(x));
-            return tasks;
+        try (var lines = Files.lines(filePath)) {
+            lines.forEach(raw -> {
+                String line = raw == null ? "" : raw.trim();
+                if (line.isEmpty()) return; // skip blanks
+                try {
+                    tasks.add(parseTask(line));
+                } catch (Exception ex) {
+                    // Skip corrupted line, optionally log:
+                    System.err.println("Skipping corrupted line: \"" + line + "\" (" + ex.getMessage() + ")");
+                }
+            });
         }
-        catch (Exception e) {
-            System.out.println("Skipping corrupted line");
-        }
-        br.close();
         return tasks;
     }
 
@@ -76,12 +75,21 @@ public class Storage {
      * @throws IOException if the file cannot be written
      */
     public void save(TaskList tasks) throws IOException {
-        BufferedWriter bw = new BufferedWriter(new FileWriter(filePath));
-        for (Task task : tasks.getTasks()) {
-            bw.write(task.toSaveFormat());
-            bw.newLine();
+        Path dir = filePath.getParent();
+        if (dir != null) {
+            Files.createDirectories(dir);
         }
-        bw.close();
+        List<String> lines = new ArrayList<>();
+        for (Task t : tasks.getTasks()) {
+            lines.add(t.toSaveFormat());
+        }
+        Files.write(
+                filePath,
+                lines,
+                StandardOpenOption.TRUNCATE_EXISTING,
+                StandardOpenOption.CREATE,
+                StandardOpenOption.WRITE
+        );
     }
 
     /**
