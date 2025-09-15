@@ -248,4 +248,8 @@ public class Cat {
         storage.save(tasks);
         return output;
     }
+
+    public String greeting() {
+        return "hello i'm cat!\nwhat can I do for you?\n";
+    }
 }

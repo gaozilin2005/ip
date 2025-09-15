@@ -30,13 +30,17 @@ public class MainWindow extends AnchorPane {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 
-    /** Injects the Duke instance */
+    /** Injects the Cat instance */
     public void setCat(Cat c) {
         cat = c;
+        String greeting = cat.greeting();
+        dialogContainer.getChildren().add(
+                DialogBox.getCatDialog(greeting, catImage)
+        );
     }
 
     /**
-     * Creates two dialog boxes, one echoing user input and the other containing Duke's reply and then appends them to
+     * Creates two dialog boxes, one echoing user input and the other containing Cat's reply and then appends them to
      * the dialog container. Clears the user input after processing.
      */
     @FXML

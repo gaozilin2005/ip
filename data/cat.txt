@@ -1,5 +1,7 @@
-T |   | study
-D |   | iP | 2025-09-19
+D | X | iP | 2025-09-19
 T |   | read
 D |   | write | 2025-01-01
 T |   | read
+T |   | homework
+D |   | iP | 2025-09-15
+D |   | cs2103t tutorial | friday 2pm to 3pm
