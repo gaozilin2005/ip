@@ -1,7 +1,6 @@
 package cat;
 
 import java.time.LocalDate;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,10 +18,6 @@ import cat.task.Todo;
  * or <code>event project /from 2025-03-01 /to 2025-03-05</code>.
  */
 public class Parser {
-    public Parser() {
-        /* Utility class; do not instantiate. */
-    }
-
     private static final Map<String, String> ALIASES = new HashMap<>();
     static {
         //Define aliases for each command
@@ -35,6 +30,10 @@ public class Parser {
 
         ALIASES.put("ev", "event");
         ALIASES.put("e", "event");
+    }
+
+    public Parser() {
+        /* Utility class; do not instantiate. */
     }
 
     /**

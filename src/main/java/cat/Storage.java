@@ -55,7 +55,9 @@ public class Storage {
         try (var lines = Files.lines(filePath)) {
             lines.forEach(raw -> {
                 String line = raw == null ? "" : raw.trim();
-                if (line.isEmpty()) return; // skip blanks
+                if (line.isEmpty()) {
+                    return; // skip blanks
+                }
                 try {
                     tasks.add(parseTask(line));
                 } catch (Exception ex) {

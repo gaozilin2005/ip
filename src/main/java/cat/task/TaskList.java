@@ -1,10 +1,10 @@
 package cat.task;
 
+import static java.util.stream.Collectors.joining;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
-
-import static java.util.stream.Collectors.joining;
 
 /**
  * Represents a list of tasks.
@@ -25,7 +25,9 @@ public class TaskList {
      * Formats all tasks in the list with their index.
      */
     public String formatList() {
-        if (ls.isEmpty()) return "oops no tasks yet";
+        if (ls.isEmpty()) {
+            return "oops no tasks yet";
+        }
         String output = "here are the tasks in your list! \n";
         output += IntStream.range(0, ls.size())
                 .mapToObj(i -> String.format("%d. %s", i + 1, ls.get(i)))
@@ -78,7 +80,9 @@ public class TaskList {
         var due = ls.stream()
                 .filter(t -> t instanceof Deadline && ((Deadline) t).dueOn(date))
                 .toList();
-        if (due.isEmpty()) return "yay no tasks due on " + date;
+        if (due.isEmpty()) {
+            return "yay no tasks due on " + date;
+        }
         return due.stream().map(Task::toString).collect(joining("\n"));
     }
 

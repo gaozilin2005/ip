@@ -1,12 +1,12 @@
 package cat;
 
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 /**
  * JavaFX entry point for the Cat task manager.
@@ -39,7 +39,7 @@ public class Main extends Application {
             stage.setMinHeight(220);
             stage.setMinWidth(417);
 
-            fxmlLoader.<MainWindow>getController().setCat(cat);  // inject the Cat instance
+            fxmlLoader.<MainWindow>getController().setCat(cat); // inject the Cat instance
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

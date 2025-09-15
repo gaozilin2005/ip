@@ -1,17 +1,16 @@
 package cat;
 
+import java.io.IOException;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-
-import java.io.IOException;
-
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -83,8 +82,8 @@ public class DialogBox extends HBox {
     // app messages (pink bubbles).
     public static DialogBox getUserDialog(String s, Image i) {
         DialogBox db = new DialogBox(s, i);
-        db.getStyleClass().add("user-row");             // row side
-        db.bubble.getStyleClass().add("user-bubble");   // bubble side
+        db.getStyleClass().add("user-row"); // row side
+        db.bubble.getStyleClass().add("user-bubble"); // bubble side
         return db;
     }
 
@@ -107,7 +106,7 @@ public class DialogBox extends HBox {
     // for asymmetric chat layout and pink styling.
     public static DialogBox getCatDialog(String s, Image i) {
         DialogBox db = new DialogBox(s, i);
-        db.flip();                                      // put avatar left
+        db.flip(); // put avatar left
         db.getStyleClass().add("app-row");
         db.bubble.getStyleClass().add("app-bubble");
         return db;
