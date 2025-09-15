@@ -86,7 +86,7 @@ public class Cat {
                 return Parser.addAlias(input);
             } else {
                 try {
-                   return handleTask(input);
+                    return handleTask(input);
                 } catch (EmptyException | InvalidException e) {
                     return e.getMessage();
                 }

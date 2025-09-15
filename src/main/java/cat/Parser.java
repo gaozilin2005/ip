@@ -51,9 +51,13 @@ public class Parser {
         String[] parts = input.split(" ", 2);
         String command = normalizeAlias(parts[0]);
 
+        if (!(input.startsWith("deadline") | input.startsWith("todo") | input.startsWith("event"))) {
+            throw new InvalidException("oops i don't know what that means :(");
+        }
+
         if (parts.length == 1) {
             throw new EmptyException(
-                    "OOPS!!! The description of a todo cannot be empty.");
+                    "OOPS!!! The description of a task cannot be empty.");
         }
 
         if (command.equals("deadline")) {
