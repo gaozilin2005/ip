@@ -1,8 +1,11 @@
 package cat;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import cat.exception.EmptyException;
 import cat.exception.InvalidException;
@@ -59,7 +62,7 @@ public class Parser {
         }
 
         if (parts.length < 2 || parts[1].trim().isEmpty()) {
-            throw new EmptyException("OOPS!!! The description of a task cannot be empty.");
+            throw new EmptyException("oops the description of a task cannot be empty.");
         }
         String rest = parts[1].trim();
 
@@ -116,18 +119,25 @@ public class Parser {
      * @return a {@link Deadline} task
      * @throws EmptyException if the description or date is missing
      */
-    public static Task parseDeadline(String input) throws EmptyException {
-        String[] parts = input.trim().split("\\s*/by\\s*", 2);
-        if (parts.length == 1) {
-            throw new EmptyException(
-                    "OOPS!!! A deadline should follow the format \"deadline [task] /by [date in yyyy-mm-dd]");
+    public static Task parseDeadline(String input) throws EmptyException, InvalidException {
+        if (input == null || input.isBlank()) {
+            throw new EmptyException("OOPS!!! Provide a description and /by <yyyy-mm-dd>.");
         }
+        // Split by "/by" once; allow extra spaces around it
+        String[] split = input.split("\\s*/by\\s*", -1);
+        if (split.length != 2) {
+            throw new EmptyException("OOPS!!! Use: deadline <desc> /by <yyyy-mm-dd>.");
+        }
+        String desc = split[0].trim();
+        String dateStr = split[1].trim();
 
-        LocalDate by = null;
-        while (by == null) {
-            by = LocalDate.parse(parts[1].trim());
+        if (desc.isEmpty()) {
+            throw new EmptyException("OOPS!!! Deadline description is empty.");
         }
-        return new Deadline(parts[0].trim(), by, false);
+        guardNoControlChars(desc);
+
+        LocalDate by = parseIsoDate(dateStr, "OOPS!!! Invalid date for /by. Use yyyy-mm-dd.");
+        return new Deadline(desc, by, false);
     }
 
     /**
@@ -152,17 +162,67 @@ public class Parser {
      * @return an {@link Event} task
      * @throws EmptyException if the description, start, or end is missing
      */
-    public static Task parseEvent(String input) throws EmptyException {
-        String[] parts = input.trim().split("\\s*/from\\s*", 2);
-        if (parts.length == 1) {
-            throw new EmptyException(
-                    "OOPS!!! A event should follow the format \"event [event] /from [date] /to [date]");
+    public static Task parseEvent(String input) throws EmptyException, InvalidException {
+        if (input == null || input.isBlank()) {
+            throw new EmptyException("OOPS!!! Provide a description, /from <date>, and /to <date>.");
         }
-        String[] parts2 = parts[1].split("\\s*/to\\s*", 2);
-        if (parts2.length == 1) {
-            throw new EmptyException(
-                    "OOPS!!! A event should follow the format \"event [event] /from [date] /to [date]");
+
+        // Robust flag extraction to detect duplicates like "/from ... /from ..."
+        // Pattern: capture segments for /from and /to; allow surrounding spaces.
+        Pattern pFrom = Pattern.compile("(?i)\\s*/from\\s+([^/]+?)\\s*(?=/to|$)");
+        Pattern pTo = Pattern.compile("(?i)\\s*/to\\s+(.+)$");
+
+        Matcher mFrom = pFrom.matcher(input);
+        Matcher mTo = pTo.matcher(input);
+
+        if (!mFrom.find() || !mTo.find()) {
+            throw new EmptyException("OOPS!!! Use: event <desc> /from <yyyy-mm-dd> /to <yyyy-mm-dd>.");
         }
-        return new Event(parts[0].trim(), parts2[0].trim(), parts2[1].trim(), false);
+
+        // Description is everything before first /from
+        String desc = input.substring(0, mFrom.start()).trim();
+        if (desc.isEmpty()) {
+            throw new EmptyException("OOPS!!! Event description is empty.");
+        }
+        guardNoControlChars(desc);
+
+        String fromStr = mFrom.group(1).trim();
+        String toStr = mTo.group(1).trim();
+
+        // Validate duplicates: ensure only one /from and one /to appear
+        if (mFrom.find()) {
+            throw new InvalidException("Multiple /from parameters detected.");
+        }
+        if (pTo.matcher(input).results().count() > 1) {
+            throw new InvalidException("Multiple /to parameters detected.");
+        }
+
+        LocalDate from = parseIsoDate(fromStr, "OOPS!!! Invalid /from date. Use yyyy-mm-dd.");
+        LocalDate to = parseIsoDate(toStr, "OOPS!!! Invalid /to date. Use yyyy-mm-dd.");
+
+        if (to.isBefore(from)) {
+            throw new InvalidException("End date must be on or after start date.");
+        }
+        return new Event(desc, fromStr, toStr, false);
+    }
+
+    private static LocalDate parseIsoDate(String s, String messageIfFail) throws InvalidException, EmptyException {
+        if (s == null || s.isBlank()) {
+            throw new EmptyException(messageIfFail);
+        }
+        try {
+            return LocalDate.parse(s);
+        } catch (DateTimeParseException ex) {
+            throw new InvalidException(messageIfFail);
+        }
+    }
+
+    /** Disallow control characters that could corrupt save files or UI. */
+    private static void guardNoControlChars(String s) throws InvalidException {
+        for (int i = 0; i < s.length(); i++) {
+            if (Character.isISOControl(s.charAt(i))) {
+                throw new InvalidException("Description contains invalid control characters.");
+            }
+        }
     }
 }

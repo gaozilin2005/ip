@@ -34,7 +34,7 @@ public abstract class Task {
      */
     public String markDone() {
         this.isDone = true;
-        return ("Nice! I've marked this task as done: \n" + this);
+        return ("nice! i've marked this task as done: \n" + this);
     }
 
     /**
@@ -42,7 +42,7 @@ public abstract class Task {
      */
     public String unmarkDone() {
         this.isDone = false;
-        return ("OK, I've marked this task as not done yet: \n" + this);
+        return ("ok, i've marked this task as not done yet: \n" + this);
     }
 
     @Override
