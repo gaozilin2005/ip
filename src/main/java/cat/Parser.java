@@ -46,31 +46,34 @@ public class Parser {
      */
     public static Task parseTask(String input) throws EmptyException, InvalidException {
         assert input != null : "input must not be null";
-        Task task = null;
+        // Trim and split into [command, rest]
+        String[] parts = input.trim().split("\\s+", 2);
+        String command = normalizeAlias(parts[0]); // map aliases (dl→deadline, etc.)
 
-        String[] parts = input.split(" ", 2);
-        String command = normalizeAlias(parts[0]);
-
-        if (!(input.startsWith("deadline") | input.startsWith("todo") | input.startsWith("event"))) {
+        switch (command) {
+        case "deadline":
+        case "todo":
+        case "event":
+            break;
+        default:
             throw new InvalidException("oops i don't know what that means :(");
         }
 
-        if (parts.length == 1) {
-            throw new EmptyException(
-                    "OOPS!!! The description of a task cannot be empty.");
+        if (parts.length < 2 || parts[1].trim().isEmpty()) {
+            throw new EmptyException("OOPS!!! The description of a task cannot be empty.");
         }
+        String rest = parts[1].trim();
 
-        if (command.equals("deadline")) {
-            task = parseDeadline(parts[1]);
-        } else if (command.equals("todo")) {
-            task = parseTodo(parts[1]);
-        } else if (command.equals("event")) {
-            task = parseEvent(parts[1]);
-        } else {
-            throw new InvalidException(
-                    "OOPS!!! I'm sorry, but I don't know what that means :-( \n");
+        switch (command) {
+        case "deadline":
+            return parseDeadline(rest);
+        case "todo":
+            return parseTodo(rest);
+        case "event":
+            return parseEvent(rest);
+        default:
+            throw new InvalidException("oops i don't know what that means :(");
         }
-        return task;
     }
 
     /**
@@ -115,7 +118,7 @@ public class Parser {
      * @throws EmptyException if the description or date is missing
      */
     public static Task parseDeadline(String input) throws EmptyException {
-        String[] parts = input.split(" /by ");
+        String[] parts = input.trim().split("\\s*/by\\s*", 2);
         if (parts.length == 1) {
             throw new EmptyException(
                     "OOPS!!! A deadline should follow the format \"deadline [task] /by [date in yyyy-mm-dd]");
@@ -123,9 +126,9 @@ public class Parser {
 
         LocalDate by = null;
         while (by == null) {
-            by = LocalDate.parse(parts[1]);
+            by = LocalDate.parse(parts[1].trim());
         }
-        return new Deadline(parts[0], by, false);
+        return new Deadline(parts[0].trim(), by, false);
     }
 
     /**
@@ -136,7 +139,11 @@ public class Parser {
      * @throws EmptyException if the description is missing
      */
     public static Task parseTodo(String input) throws EmptyException {
-        return new Todo(input, false);
+        String desc = input.trim();
+        if (desc.isEmpty()) {
+            throw new EmptyException("OOPS!!! The description of a todo cannot be empty.");
+        }
+        return new Todo(desc, false);
     }
 
     /**
@@ -147,16 +154,16 @@ public class Parser {
      * @throws EmptyException if the description, start, or end is missing
      */
     public static Task parseEvent(String input) throws EmptyException {
-        String[] parts = input.split(" /from ");
+        String[] parts = input.trim().split("\\s*/from\\s*", 2);
         if (parts.length == 1) {
             throw new EmptyException(
                     "OOPS!!! A event should follow the format \"event [event] /from [date] /to [date]");
         }
-        String[] parts2 = parts[1].split(" /to ");
+        String[] parts2 = parts[1].split("\\s*/to\\s*", 2);
         if (parts2.length == 1) {
             throw new EmptyException(
                     "OOPS!!! A event should follow the format \"event [event] /from [date] /to [date]");
         }
-        return new Event(parts[0], parts2[0], parts2[1], false);
+        return new Event(parts[0].trim(), parts2[0].trim(), parts2[1].trim(), false);
     }
 }
