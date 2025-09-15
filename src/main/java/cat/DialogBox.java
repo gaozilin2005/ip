@@ -49,6 +49,7 @@ public class DialogBox extends HBox {
         dialogText.setText(text);
         // wrap to bubble width (minus a little inner padding)
         dialogText.wrappingWidthProperty().bind(bubble.widthProperty().subtract(20));
+        setFillHeight(false);
 
         displayPicture.setImage(img);
     }

@@ -36,12 +36,12 @@
 
 /* app-side avatar (slightly smaller) */
 .app-row .avatar {
-    -fx-fit-width: 70px;
-    -fx-fit-height: 70px;
+    -fx-fit-width: 50px;
+    -fx-fit-height: 50px;
 }
 
 /* user-side avatar (leave at full size) */
 .user-row .avatar {
-    -fx-fit-width: 99px;
-    -fx-fit-height: 99px;
+    -fx-fit-width: 79px;
+    -fx-fit-height: 79px;
 }

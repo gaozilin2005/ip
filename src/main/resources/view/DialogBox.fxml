@@ -24,7 +24,7 @@
         </TextFlow>
 
         <ImageView fx:id="displayPicture" styleClass="avatar"
-                   fitHeight="99.0" fitWidth="99.0" preserveRatio="true"/>
+                    fitWidth="99.0" preserveRatio="true"/>
     </children>
 </fx:root>
 
