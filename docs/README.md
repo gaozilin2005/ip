@@ -1,6 +1,6 @@
 # Cat User Guide
 
-// Product screenshot goes here
+![Screenshot of Cat UI](Ui.png)
 
 Cat is a simple desktop chatbot that helps you keep track of tasks.  
 It supports **todos, deadlines, events**, and comes with a friendly GUI built with JavaFX.
