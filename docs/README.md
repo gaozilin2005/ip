@@ -5,6 +5,12 @@
 Cat is a simple desktop chatbot that helps you keep track of tasks.  
 It supports **todos, deadlines, events**, and comes with a friendly GUI built with JavaFX.
 
+## Quick Start
+1. Download the latest cat.jar file from the releases
+2. Double-click the jar file to launch Cat
+3. Type commands in the text box and press Enter or click "Send"
+4. Cat will respond and help you manage your tasks!
+
 ## Adding todos
 
 Adds a simple task without any date.
@@ -129,3 +135,17 @@ Displays tasks due on the specified date.
 ```
 [D][ ] submit report (by: Sep 1 2025)
 ```
+
+### Troubleshooting
+#### Cat won't start?
+* Make sure you have Java 11 or later installed
+* Try running from command line: java -jar cat.jar
+#### Tasks not saving?
+* Check that Cat has permission to create files in the folder where you're running it
+* Cat saves tasks to a data folder in the same location as the jar file
+#### Getting error messages?
+* Check the command format matches the examples above
+* Make sure dates are in the correct format (yyyy-MM-dd)
+* Task numbers should be positive integers
+___
+Happy task managing with Cat!!!
