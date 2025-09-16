@@ -5,4 +5,3 @@ T |   | homework
 D |   | iP | 2025-09-15
 T |   | read book
 D |   | submit report | 2025-09-01
-D |   | project meeting | Monday 3pm to 6pm

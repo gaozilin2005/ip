@@ -53,5 +53,9 @@ public class MainWindow extends AnchorPane {
                 DialogBox.getCatDialog(response, catImage)
         );
         userInput.clear();
+
+        if ("bye".equalsIgnoreCase(input.trim())) {
+            javafx.application.Platform.exit();
+        }
     }
 }
