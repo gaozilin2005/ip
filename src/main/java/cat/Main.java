@@ -33,7 +33,7 @@ public class Main extends Application {
             // Load dialog/bubble styles AFTER so they win if there are overlaps
             scene.getStylesheets().add(Main.class.getResource("/css/dialog-box.css").toExternalForm());
 
-
+            stage.setTitle("Cat");
             stage.setScene(scene);
 
             stage.setMinHeight(220);
