@@ -1,7 +1,0 @@
-T |   | read
-D |   | write | 2025-01-01
-T |   | read
-T |   | homework
-D |   | iP | 2025-09-15
-T |   | read book
-D |   | submit report | 2025-09-01

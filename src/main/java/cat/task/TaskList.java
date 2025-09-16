@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
+import cat.exception.InvalidTaskIndexException;
+
 /**
  * Represents a list of tasks.
  * A <code>TaskList</code> stores and manages multiple {@link Task} objects.
@@ -39,7 +41,10 @@ public class TaskList {
      * Marks a task as done.
      * @param taskNum index of task in list (0-based)
      */
-    public String markDone(int taskNum) {
+    public String markDone(int taskNum) throws InvalidTaskIndexException {
+        if (taskNum < 0 || taskNum >= ls.size()) {
+            throw new InvalidTaskIndexException("oops! task # " + (taskNum + 1) + " does not exist.");
+        }
         return this.ls.get(taskNum).markDone();
     }
 
@@ -47,7 +52,10 @@ public class TaskList {
      * Marks a task as not done.
      * @param taskNum index of task in list (0-based)
      */
-    public String unmarkDone(int taskNum) {
+    public String unmarkDone(int taskNum) throws InvalidTaskIndexException {
+        if (taskNum < 0 || taskNum >= ls.size()) {
+            throw new InvalidTaskIndexException("oops! task # " + (taskNum + 1) + " does not exist.");
+        }
         return this.ls.get(taskNum).unmarkDone();
     }
 
@@ -55,7 +63,10 @@ public class TaskList {
      * Deletes a task from the list and prints a message.
      * @param taskNum index of task in list (0-based)
      */
-    public String delete(int taskNum) {
+    public String delete(int taskNum) throws InvalidTaskIndexException {
+        if (taskNum < 0 || taskNum >= ls.size()) {
+            throw new InvalidTaskIndexException("oops! task # " + (taskNum + 1) + " does not exist.");
+        }
         Task removed = ls.get(taskNum);
         ls.remove(taskNum);
         return ("okayy i've removed this task: \n"

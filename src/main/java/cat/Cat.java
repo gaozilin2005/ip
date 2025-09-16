@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import cat.exception.EmptyException;
 import cat.exception.InvalidException;
+import cat.exception.InvalidTaskIndexException;
 import cat.task.Task;
 import cat.task.TaskList;
 import cat.ui.Ui;
@@ -91,6 +92,8 @@ public class Cat {
                     return e.getMessage();
                 }
             }
+        } catch (InvalidTaskIndexException e) {
+            return e.getMessage();
         } catch (DateTimeParseException | ArrayIndexOutOfBoundsException e) {
             return DATE_ERROR_MESSAGE;
         } catch (IOException e) {
@@ -125,7 +128,7 @@ public class Cat {
      * @throws NumberFormatException if the index token is not an integer
      * @throws ArrayIndexOutOfBoundsException if the index token is missing
      */
-    private String handleMark(String input) throws IOException {
+    private String handleMark(String input) throws IOException, InvalidTaskIndexException {
         int taskNum = getTaskNum(input);
         String output = tasks.markDone(taskNum);
         assert output != null : "Mark output must not be empty";
@@ -144,7 +147,7 @@ public class Cat {
      * @throws NumberFormatException if the index token is not an integer
      * @throws ArrayIndexOutOfBoundsException if the index token is missing
      */
-    private String handleUnmark(String input) throws IOException {
+    private String handleUnmark(String input) throws IOException, InvalidTaskIndexException {
         int taskNum = getTaskNum(input);
         String output = tasks.unmarkDone(taskNum);
         assert output != null : "Unmark output must not be empty";
@@ -179,7 +182,7 @@ public class Cat {
      * @throws NumberFormatException if the index token is not an integer
      * @throws ArrayIndexOutOfBoundsException if the index token is missing
      */
-    private String handleDelete(String input) throws IOException {
+    private String handleDelete(String input) throws IOException, InvalidTaskIndexException {
         int taskNum = getTaskNum(input);
         String output = tasks.delete(taskNum);
         assert output != null : "Delete output must not be empty";
@@ -250,6 +253,6 @@ public class Cat {
     }
 
     public String greeting() {
-        return "hello i'm cat!\nwhat can I do for you?\n";
+        return "hello i'm cat!\nwhat can I do for you?";
     }
 }
