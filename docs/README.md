@@ -22,7 +22,7 @@ Displays a confirmation that the task is added and lets you know how many tasks 
 
 ```
 got it!! i've added this task:
-  [T][ ] read book
+[T][ ] read book
 now you have 1 task in the list.
 ```
 
@@ -37,7 +37,7 @@ Displays a confirmation that the task is added and lets you know how many tasks 
 
 ```
 got it!! i've added this task:
-  [D][ ] submit report (by: Sep 1 2025)
+[D][ ] submit report (by: Sep 1 2025)
 now you have 2 tasks in the list.
 ```
 
@@ -52,7 +52,7 @@ Displays a confirmation that the task is added and lets you know how many tasks 
 
 ```
 got it!! i've added this task:
-  [E][ ] project meeting (from: Monday 3pm to: 6pm)
+[E][ ] project meeting (from: Monday 3pm to: 6pm)
 now you have 3 tasks in the list.
 ```
 
@@ -66,8 +66,8 @@ Example: `mark 2`
 Displays a confirmation that the task is marked as done.
 
 ```
-Nice! I've marked this task as done:
-  [D][X] submit report (by: Sep 1 2025)
+nice! i've marked this task as done:
+[D][X] submit report (by: Sep 1 2025)
 ```
 
 ## Unmarking tasks
@@ -79,8 +79,8 @@ Example: `unmark 2`
 Displays a confirmation that the task is marked as not done.
 
 ```
-OK, I've marked this task as not done yet:
-  [D][ ] submit report (by: Sep 1 2025)
+ok, i've marked this task as not done yet:
+[D][ ] submit report (by: Sep 1 2025)
 ```
 
 ## Deleting tasks
@@ -93,7 +93,7 @@ Displays a confirmation that the task is deleted and lets you know how many task
 
 ```
 okayy i've removed this task:
-  [T][ ] read book
+[T][ ] read book
 now you have 2 tasks in the list.
 ```
 
@@ -147,5 +147,5 @@ Displays tasks due on the specified date.
 * Check the command format matches the examples above
 * Make sure dates are in the correct format (yyyy-MM-dd)
 * Task numbers should be positive integers
-___
-Happy task managing with Cat!!!
+<br>___<br>
+##### Happy task managing with Cat!!!
